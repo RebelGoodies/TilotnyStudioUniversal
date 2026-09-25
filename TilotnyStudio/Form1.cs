@@ -819,7 +819,25 @@ namespace TilotnyStudio
             entities.IconData = DatParser.ReadMTD(entities);
             try
             {
-                entities.MTmaster = (Bitmap)Image.FromFile(getModFile("Art\\Textures\\MT_CommandBar.tga", entities));
+                //it seems impossible to open the bmp such that masks are preserved (which also semi resizes for some reaosn) and such that the file is unlocked
+                //This stupid setup is the best workaround I could find
+                if(!(entities.MTmaster is null)) entities.MTmaster.Dispose();
+                string workaround = globals.LocalMod + "\\Art\\Textures\\MT_Workaround.tga";
+                System.IO.Directory.CreateDirectory(globals.LocalMod + "\\Art\\Textures");
+                File.Delete(workaround);
+                File.Copy(getModFile("Art\\Textures\\MT_CommandBar.tga", entities), workaround);
+                entities.MTmaster = (Bitmap)Image.FromFile(workaround);
+                //Bitmap tmp = (Bitmap)Image.FromFile(getModFile("Art\\Textures\\MT_CommandBar.tga", entities));
+                //entities.MTmaster = tmp.Clone(new Rectangle(0, 0, tmp.Width, tmp.Height), tmp.PixelFormat);
+                //tmp.Dispose();
+                /*using (Bitmap bmpTemp = new Bitmap(getModFile("Art\\Textures\\MT_CommandBar.tga", entities)))
+                {
+                    entities.MTmaster = new Bitmap(bmpTemp);
+                }*/
+                /*using (Bitmap bmpTemp = (Bitmap)Image.FromFile(getModFile("Art\\Textures\\MT_CommandBar.tga", entities)))
+                {
+                    entities.MTmaster = new Bitmap(bmpTemp);
+                }*/
                 globals.MTDtga = false;
             }
             catch
@@ -891,6 +909,7 @@ namespace TilotnyStudio
             loadscreen.CloseLoadScreen();
 
             UnitCopyFileComboBox.Items.Clear();
+            HeroCopyFileComboBox.Items.Clear();
             List<string> unitfiles = getModFiles("XML\\Units", "*.xml", entities);
             string defaultfile = "Submod_Units";
             bool defaultfound = false;
@@ -909,6 +928,25 @@ namespace TilotnyStudio
                 NewUnitFileTextBox.Text = defaultfile;
                 NewUnitFileCheckBox.Checked = true;
                 UnitCopyFileComboBox.SelectedIndex = 0;
+            }
+            defaultfile = "Submod_Heroes";
+            defaultfound = false;
+            unitfiles = getModFiles("XML\\Heroes", "*.xml", entities);
+            foreach (string unitfile in unitfiles)
+            {
+                string trimmedfile = LastFolderOrFile(unitfile);
+                HeroCopyFileComboBox.Items.Add(trimmedfile);
+                if (trimmedfile == defaultfile + ".xml")
+                {
+                    defaultfound = true;
+                    HeroCopyFileComboBox.SelectedItem = trimmedfile;
+                }
+            }
+            if (!defaultfound)
+            {
+                NewUnitFileTextBox.Text = defaultfile;
+                NewUnitFileCheckBox.Checked = true;
+                HeroCopyFileComboBox.SelectedIndex = 0;
             }
 
             UnitHPCopyFileComboBox.Items.Clear();
@@ -1464,6 +1502,7 @@ namespace TilotnyStudio
                         }
                         else VariantChainLabel.Text = "";
                         VariantLabel.Text = FindDescendants(unit.unitname, units);
+                        updateStatsIcon(unit.icon);
 
                         string newname = FindNewUnitID(unit.unitname, entities);
                         //todo create funtion to check if any unit in any unit list exists, also call on saving
@@ -1492,6 +1531,21 @@ namespace TilotnyStudio
                     FilterLabel.Visible = !Multi;
                 }
             }
+        }
+
+        private void updateStatsIcon(string icon)
+        {
+            IconPictureBox.Image = new Bitmap(IconPictureBox.Width, IconPictureBox.Height);
+            IconData icondata = DatParser.GetIconData(icon, entities);
+            if (icondata.size_x > 0 && entities.MTmaster != null)
+            {
+                // Create a Graphics object to do the drawing, *with the new bitmap as the target*
+                using (Graphics g = Graphics.FromImage(IconPictureBox.Image))
+                {
+                    g.DrawImage(entities.MTmaster, 0, 0, new Rectangle(icondata.origin_x, icondata.origin_y, icondata.size_x, icondata.size_y), GraphicsUnit.Pixel);
+                }
+            }
+            IconPictureBox.Tag = icon;
         }
 
         private void AffilAllButton_Click(object sender, EventArgs e)
@@ -1748,20 +1802,35 @@ namespace TilotnyStudio
                             }
                             for (int index = 0; index < globals.playablefactions.Count; index++)
                             {
-                                string facname = (string)globals.playablefactions[index].factionname;
-                                if (affilist.Contains(facname) && !unit.affiliations.Contains(facname))
+                                if(index < CustomStartIndexes.Count)
                                 {
-                                    //Adding new
-                                    CustomLib[CustomStartIndexes[index]] += "\"" + unitname + "\", ";
-                                }
-                                if (!affilist.Contains(facname) && unit.affiliations.Contains(facname))
-                                {
-                                    //Remove existing
-                                    string tokill = "\"" + unitname + "\"";
-                                    for (int j = CustomStartIndexes[index]; j < CustomEndIndexes[index]; j++)
+                                    string facname = (string)globals.playablefactions[index].factionname;
+                                    if (affilist.Contains(facname))
                                     {
-                                        CustomLib[j] = CustomLib[j].Replace(tokill + ",", "");
-                                        CustomLib[j] = CustomLib[j].Replace(tokill, "");
+                                        bool add = true;
+                                        if (!unit.affiliations.Contains(facname)) add = true;
+                                        else
+                                        {
+                                            for (int j = CustomStartIndexes[index]; j < CustomEndIndexes[index]; j++)
+                                            {
+                                                if (CustomLib[j].Contains("\"" + unitname + "\""))
+                                                {
+                                                    add = false;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if (add) CustomLib[CustomStartIndexes[index]] += "\"" + unitname + "\", ";
+                                    }
+                                    if (!affilist.Contains(facname) && unit.affiliations.Contains(facname))
+                                    {
+                                        //Remove existing
+                                        string tokill = "\"" + unitname + "\"";
+                                        for (int j = CustomStartIndexes[index]; j < CustomEndIndexes[index]; j++)
+                                        {
+                                            CustomLib[j] = CustomLib[j].Replace(tokill + ",", "");
+                                            CustomLib[j] = CustomLib[j].Replace(tokill, "");
+                                        }
                                     }
                                 }
                             }
@@ -2155,11 +2224,11 @@ namespace TilotnyStudio
                         unit[] templates = new unit[count + 1];
                         for (int j = 0; j < count; j++)
                         {
-                            for (int k = 0; k < unitlist.Count; k++)
+                            for (int k = 0; k < entities.objects.Count; k++)
                             {
-                                if (unitlist[k].unitname == unitlist[i].variantchain[j])
+                                if (entities.objects[k].unitname == unitlist[i].variantchain[j])
                                 {
-                                    templates[j] = unitlist[k];
+                                    templates[j] = entities.objects[k];
                                     break;
                                 }
                             }
@@ -2404,6 +2473,12 @@ namespace TilotnyStudio
                                 changed = true;
                             }
 
+                            if (unit.icon.ToUpper() != (string)IconPictureBox.Tag)
+                            {
+                                WriteXMLTag("Icon_Name", (string)IconPictureBox.Tag, doc, XMLunit);
+                                changed = true;
+                            }
+
                             if (SpeedBox.Enabled && SpeedBox.Value != (decimal)unit.speed && (MainUnit && unit.speed_baseID < 0 || templates[count].speed_baseID == j))
                             {
                                 unit.speed = (float)SpeedBox.Value;
@@ -2573,8 +2648,9 @@ namespace TilotnyStudio
                     }
                 }
             }
-            else if (UnitTabControl.SelectedIndex == 2) //unit copy
+            else if (UnitTabControl.SelectedIndex == 2 || UnitTabControl.SelectedIndex == 3) //unit/hero copy. Very similar operation
             {
+                bool unitmode = UnitTabControl.SelectedIndex == 2;
                 //Todo check that unit name is free, new unit/hp files are free
                 //todo give up if infantry (or anything with a company spawner is selected. Just in deep copy, I guess?
                 if (AffilListBox.SelectedItems.Count == 0)
@@ -2594,22 +2670,34 @@ namespace TilotnyStudio
                     string xml = NewUnitFileTextBox.Text + ".xml";
                     unitfile = ConvertMainPathToMod("\\Data\\XML\\Units\\" + xml, true);
                     Directory.CreateDirectory(UpOneFolder(unitfile));
-                    File.WriteAllText(unitfile, "<?xml version='1.0' encoding='ASCII'?>\n<"+ NewUnitFileTextBox.Text + ">\n\t\n</"+ NewUnitFileTextBox.Text + ">"); //Could use XML functions too
-                    UnitCopyFileComboBox.Items.Add(xml);
-                    UnitCopyFileComboBox.SelectedItem = xml;
+                    File.WriteAllText(unitfile, "<?xml version='1.0' encoding='ASCII'?>\n<" + NewUnitFileTextBox.Text + ">\n\t\n</" + NewUnitFileTextBox.Text + ">"); //Could use XML functions too
+                    if (unitmode)
+                    {
+                        UnitCopyFileComboBox.Items.Add(xml);
+                        UnitCopyFileComboBox.SelectedItem = xml;
+                    }
+                    else
+                    {
+                        HeroCopyFileComboBox.Items.Add(xml);
+                        HeroCopyFileComboBox.SelectedItem = xml;
+                    }
 
                     XmlDocument newdoc = new XmlDocument();
                     newdoc.PreserveWhitespace = true;
                     newdoc.Load(getModFile("XML\\GameObjectFiles.xml", entities));
                     XmlNode newroot = newdoc.DocumentElement;
                     XmlElement newelem = newdoc.CreateElement("File");
-                    newelem.InnerText = "Units\\"+ xml;
+                    newelem.InnerText = "Units\\" + xml;
                     newroot.AppendChild(newelem);
                     XmlNode linebreak = newdoc.CreateTextNode("\n");
                     newroot.AppendChild(linebreak);
                     newdoc.Save(ConvertMainPathToMod("\\Data\\XML\\GameObjectFiles.xml", true));
                 }
-                else unitfile = getModFile("XML\\units\\" + (string)UnitCopyFileComboBox.SelectedItem,entities); //todo might need some help
+                else
+                {
+                    if (unitmode) unitfile = getModFile("XML\\units\\" + (string)UnitCopyFileComboBox.SelectedItem, entities); //todo might need some help
+                    else unitfile = getModFile("XML\\units\\" + (string)HeroCopyFileComboBox.SelectedItem, entities);
+                }
 
                 unit baseunit = unitlist.FirstOrDefault(x => x.unitname == (string)AffilListBox.SelectedItem); //it must exist if it was on the list
                 List<string> CopyUnits = new List<string>(); //Find all dependent units
@@ -3124,6 +3212,12 @@ namespace TilotnyStudio
                 UnitHPCopyFileComboBox.SelectedItem = NewUnitHPFileTextBox.Text;
                 NewUnitHPFileTextBox.Text = "";
             }
+            if (NewHeroFileCheckBox.Checked)
+            {
+                NewHeroFileCheckBox.Checked = false;
+                HeroCopyFileComboBox.SelectedItem = NewUnitFileTextBox.Text;
+                NewHeroFileTextBox.Text = "";
+            }
             populateAffilUnits();
 
             MessageBox.Show("Changes saved");
@@ -3203,7 +3297,7 @@ namespace TilotnyStudio
                 return;
             }
 
-            if (ModListBox.Items.Contains(newmod))
+            if (Directory.Exists(globals.localmodpath + "\\" + newmod))
             {
                 MessageBox.Show("A mod of that name already exists");
                 ModListBox.SelectedItem = newmod;
@@ -4173,6 +4267,30 @@ namespace TilotnyStudio
                 }
             }
             
+        }
+
+        private void ChangeIconButtonStats_Click(object sender, EventArgs e)
+        {
+            unit unit = new unit();
+            IconPickAndAdd ico = new IconPickAndAdd();
+            if (AffilListBox.SelectedItems.Count > 0)
+            {
+                unit = entities.objects.FirstOrDefault(s => s.unitname == (string)AffilListBox.SelectedItem);
+                ico.icon = unit.icon;
+            }
+            ico.entities = entities;
+            ico.MTDArray = globals.MTDArray;
+            ico.localmod = globals.LocalMod;
+            ico.mainicon = getNonSubModFile("Art\\Textures\\MT_CommandBar.tga");
+            ico.ShowDialog();
+
+            if (ico.addedicon)
+            {
+                entities = ico.entities;
+                globals.MTDArray = ico.MTDArray;
+            }
+            if(!ico.cancel) updateStatsIcon(ico.icon);
+
         }
 
         //leave below this point alone

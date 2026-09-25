@@ -78,6 +78,10 @@
             this.ReqStructLabel = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.StatsTab = new System.Windows.Forms.TabPage();
+            this.IconPictureBox = new System.Windows.Forms.PictureBox();
+            this.ChangeIconButtonStats = new System.Windows.Forms.Button();
+            this.VariantLabel = new System.Windows.Forms.Label();
+            this.VariantChainLabel = new System.Windows.Forms.Label();
             this.HPExamineFinePrintLabel = new System.Windows.Forms.Label();
             this.CalcLabel = new System.Windows.Forms.Label();
             this.RangeAdjustBox = new System.Windows.Forms.NumericUpDown();
@@ -144,6 +148,38 @@
             this.NewUnitFileTextBox = new System.Windows.Forms.TextBox();
             this.NewUnitFileCheckBox = new System.Windows.Forms.CheckBox();
             this.UnitCopyFileComboBox = new System.Windows.Forms.ComboBox();
+            this.HeroCreateTab = new System.Windows.Forms.TabPage();
+            this.HeroCreatePanel = new System.Windows.Forms.Panel();
+            this.button5 = new System.Windows.Forms.Button();
+            this.label26 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.NewHeroFileTextBox = new System.Windows.Forms.TextBox();
+            this.NewHeroFileCheckBox = new System.Windows.Forms.CheckBox();
+            this.HeroCopyFileComboBox = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.AffilSearchTextBox = new System.Windows.Forms.TextBox();
             this.GroundRadioButton = new System.Windows.Forms.RadioButton();
@@ -160,8 +196,6 @@
             this.ModFilesButton = new System.Windows.Forms.Button();
             this.SuperToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.VariantChainLabel = new System.Windows.Forms.Label();
-            this.VariantLabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -171,6 +205,7 @@
             this.AffilTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.InfluenceNumericUpDown)).BeginInit();
             this.StatsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.IconPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RangeAdjustBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AccTierBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PopCalcBox)).BeginInit();
@@ -190,6 +225,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.PopBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hpBox)).BeginInit();
             this.UnitCopyTab.SuspendLayout();
+            this.HeroCreateTab.SuspendLayout();
+            this.HeroCreatePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -574,6 +613,7 @@
             this.UnitTabControl.Controls.Add(this.AffilTab);
             this.UnitTabControl.Controls.Add(this.StatsTab);
             this.UnitTabControl.Controls.Add(this.UnitCopyTab);
+            this.UnitTabControl.Controls.Add(this.HeroCreateTab);
             this.UnitTabControl.Location = new System.Drawing.Point(387, 3);
             this.UnitTabControl.Name = "UnitTabControl";
             this.UnitTabControl.SelectedIndex = 0;
@@ -796,6 +836,8 @@
             // 
             // StatsTab
             // 
+            this.StatsTab.Controls.Add(this.IconPictureBox);
+            this.StatsTab.Controls.Add(this.ChangeIconButtonStats);
             this.StatsTab.Controls.Add(this.VariantLabel);
             this.StatsTab.Controls.Add(this.VariantChainLabel);
             this.StatsTab.Controls.Add(this.HPExamineFinePrintLabel);
@@ -854,11 +896,50 @@
             this.StatsTab.Text = "Stats";
             this.StatsTab.UseVisualStyleBackColor = true;
             // 
+            // IconPictureBox
+            // 
+            this.IconPictureBox.Location = new System.Drawing.Point(17, 58);
+            this.IconPictureBox.Name = "IconPictureBox";
+            this.IconPictureBox.Size = new System.Drawing.Size(75, 75);
+            this.IconPictureBox.TabIndex = 91;
+            this.IconPictureBox.TabStop = false;
+            // 
+            // ChangeIconButtonStats
+            // 
+            this.ChangeIconButtonStats.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChangeIconButtonStats.Location = new System.Drawing.Point(102, 102);
+            this.ChangeIconButtonStats.Name = "ChangeIconButtonStats";
+            this.ChangeIconButtonStats.Size = new System.Drawing.Size(130, 31);
+            this.ChangeIconButtonStats.TabIndex = 90;
+            this.ChangeIconButtonStats.Text = "Change Icon...";
+            this.ChangeIconButtonStats.UseVisualStyleBackColor = true;
+            this.ChangeIconButtonStats.Click += new System.EventHandler(this.ChangeIconButtonStats_Click);
+            // 
+            // VariantLabel
+            // 
+            this.VariantLabel.AutoSize = true;
+            this.VariantLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.VariantLabel.Location = new System.Drawing.Point(16, 35);
+            this.VariantLabel.Name = "VariantLabel";
+            this.VariantLabel.Size = new System.Drawing.Size(10, 13);
+            this.VariantLabel.TabIndex = 89;
+            this.VariantLabel.Text = ".";
+            // 
+            // VariantChainLabel
+            // 
+            this.VariantChainLabel.AutoSize = true;
+            this.VariantChainLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.VariantChainLabel.Location = new System.Drawing.Point(17, 10);
+            this.VariantChainLabel.Name = "VariantChainLabel";
+            this.VariantChainLabel.Size = new System.Drawing.Size(10, 13);
+            this.VariantChainLabel.TabIndex = 88;
+            this.VariantChainLabel.Text = ".";
+            // 
             // HPExamineFinePrintLabel
             // 
             this.HPExamineFinePrintLabel.AutoSize = true;
             this.HPExamineFinePrintLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HPExamineFinePrintLabel.Location = new System.Drawing.Point(18, 267);
+            this.HPExamineFinePrintLabel.Location = new System.Drawing.Point(18, 326);
             this.HPExamineFinePrintLabel.Name = "HPExamineFinePrintLabel";
             this.HPExamineFinePrintLabel.Size = new System.Drawing.Size(415, 12);
             this.HPExamineFinePrintLabel.TabIndex = 87;
@@ -869,7 +950,7 @@
             // 
             this.CalcLabel.AutoSize = true;
             this.CalcLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CalcLabel.Location = new System.Drawing.Point(720, 56);
+            this.CalcLabel.Location = new System.Drawing.Point(720, 115);
             this.CalcLabel.Name = "CalcLabel";
             this.CalcLabel.Size = new System.Drawing.Size(156, 20);
             this.CalcLabel.TabIndex = 86;
@@ -883,7 +964,7 @@
             0,
             0,
             0});
-            this.RangeAdjustBox.Location = new System.Drawing.Point(129, 233);
+            this.RangeAdjustBox.Location = new System.Drawing.Point(129, 292);
             this.RangeAdjustBox.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -898,7 +979,7 @@
             // 
             this.RangeAdjustLabel.AutoSize = true;
             this.RangeAdjustLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RangeAdjustLabel.Location = new System.Drawing.Point(16, 235);
+            this.RangeAdjustLabel.Location = new System.Drawing.Point(16, 294);
             this.RangeAdjustLabel.Name = "RangeAdjustLabel";
             this.RangeAdjustLabel.Size = new System.Drawing.Size(110, 20);
             this.RangeAdjustLabel.TabIndex = 85;
@@ -909,7 +990,7 @@
             // 
             this.AccTierLabel.AutoSize = true;
             this.AccTierLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AccTierLabel.Location = new System.Drawing.Point(250, 235);
+            this.AccTierLabel.Location = new System.Drawing.Point(250, 294);
             this.AccTierLabel.Name = "AccTierLabel";
             this.AccTierLabel.Size = new System.Drawing.Size(108, 20);
             this.AccTierLabel.TabIndex = 83;
@@ -918,7 +999,7 @@
             // AccTierBox
             // 
             this.AccTierBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AccTierBox.Location = new System.Drawing.Point(390, 233);
+            this.AccTierBox.Location = new System.Drawing.Point(390, 292);
             this.AccTierBox.Maximum = new decimal(new int[] {
             2,
             0,
@@ -937,7 +1018,7 @@
             // ApplyCalcButton
             // 
             this.ApplyCalcButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ApplyCalcButton.Location = new System.Drawing.Point(701, 236);
+            this.ApplyCalcButton.Location = new System.Drawing.Point(701, 295);
             this.ApplyCalcButton.Name = "ApplyCalcButton";
             this.ApplyCalcButton.Size = new System.Drawing.Size(207, 35);
             this.ApplyCalcButton.TabIndex = 81;
@@ -949,7 +1030,7 @@
             // 
             this.PopCalcLabel.AutoSize = true;
             this.PopCalcLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PopCalcLabel.Location = new System.Drawing.Point(723, 93);
+            this.PopCalcLabel.Location = new System.Drawing.Point(723, 152);
             this.PopCalcLabel.Name = "PopCalcLabel";
             this.PopCalcLabel.Size = new System.Drawing.Size(88, 20);
             this.PopCalcLabel.TabIndex = 41;
@@ -959,7 +1040,7 @@
             // 
             this.PopCalcBox.Enabled = false;
             this.PopCalcBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PopCalcBox.Location = new System.Drawing.Point(836, 91);
+            this.PopCalcBox.Location = new System.Drawing.Point(836, 150);
             this.PopCalcBox.Maximum = new decimal(new int[] {
             9999,
             0,
@@ -973,7 +1054,7 @@
             // 
             this.CPCalcLabel.AutoSize = true;
             this.CPCalcLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CPCalcLabel.Location = new System.Drawing.Point(697, 203);
+            this.CPCalcLabel.Location = new System.Drawing.Point(697, 262);
             this.CPCalcLabel.Name = "CPCalcLabel";
             this.CPCalcLabel.Size = new System.Drawing.Size(117, 20);
             this.CPCalcLabel.TabIndex = 39;
@@ -988,7 +1069,7 @@
             0,
             0,
             0});
-            this.CPCalcBox.Location = new System.Drawing.Point(837, 201);
+            this.CPCalcBox.Location = new System.Drawing.Point(837, 260);
             this.CPCalcBox.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -1002,7 +1083,7 @@
             // 
             this.CPLabel.AutoSize = true;
             this.CPLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CPLabel.Location = new System.Drawing.Point(250, 199);
+            this.CPLabel.Location = new System.Drawing.Point(250, 258);
             this.CPLabel.Name = "CPLabel";
             this.CPLabel.Size = new System.Drawing.Size(117, 20);
             this.CPLabel.TabIndex = 37;
@@ -1016,7 +1097,7 @@
             0,
             0,
             0});
-            this.CPBox.Location = new System.Drawing.Point(390, 197);
+            this.CPBox.Location = new System.Drawing.Point(390, 256);
             this.CPBox.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -1030,7 +1111,7 @@
             // 
             this.SuperShipCheckBox.AutoSize = true;
             this.SuperShipCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SuperShipCheckBox.Location = new System.Drawing.Point(463, 56);
+            this.SuperShipCheckBox.Location = new System.Drawing.Point(485, 58);
             this.SuperShipCheckBox.Name = "SuperShipCheckBox";
             this.SuperShipCheckBox.Size = new System.Drawing.Size(229, 24);
             this.SuperShipCheckBox.TabIndex = 35;
@@ -1043,7 +1124,7 @@
             // 
             this.hpFinePrintLabel.AutoSize = true;
             this.hpFinePrintLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hpFinePrintLabel.Location = new System.Drawing.Point(21, 349);
+            this.hpFinePrintLabel.Location = new System.Drawing.Point(21, 408);
             this.hpFinePrintLabel.Name = "hpFinePrintLabel";
             this.hpFinePrintLabel.Size = new System.Drawing.Size(202, 12);
             this.hpFinePrintLabel.TabIndex = 34;
@@ -1053,7 +1134,7 @@
             // 
             this.CrewLabel.AutoSize = true;
             this.CrewLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CrewLabel.Location = new System.Drawing.Point(16, 199);
+            this.CrewLabel.Location = new System.Drawing.Point(16, 258);
             this.CrewLabel.Name = "CrewLabel";
             this.CrewLabel.Size = new System.Drawing.Size(86, 20);
             this.CrewLabel.TabIndex = 33;
@@ -1068,7 +1149,7 @@
             0,
             0,
             0});
-            this.CrewBox.Location = new System.Drawing.Point(129, 197);
+            this.CrewBox.Location = new System.Drawing.Point(129, 256);
             this.CrewBox.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -1083,7 +1164,7 @@
             // 
             this.LifetimeLabel.AutoSize = true;
             this.LifetimeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LifetimeLabel.Location = new System.Drawing.Point(556, 461);
+            this.LifetimeLabel.Location = new System.Drawing.Point(556, 520);
             this.LifetimeLabel.Name = "LifetimeLabel";
             this.LifetimeLabel.Size = new System.Drawing.Size(145, 20);
             this.LifetimeLabel.TabIndex = 31;
@@ -1092,7 +1173,7 @@
             // LifetimeBox
             // 
             this.LifetimeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LifetimeBox.Location = new System.Drawing.Point(724, 459);
+            this.LifetimeBox.Location = new System.Drawing.Point(724, 518);
             this.LifetimeBox.Name = "LifetimeBox";
             this.LifetimeBox.Size = new System.Drawing.Size(72, 26);
             this.LifetimeBox.TabIndex = 30;
@@ -1101,7 +1182,7 @@
             // 
             this.ConcurrentLabel.AutoSize = true;
             this.ConcurrentLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ConcurrentLabel.Location = new System.Drawing.Point(556, 418);
+            this.ConcurrentLabel.Location = new System.Drawing.Point(556, 477);
             this.ConcurrentLabel.Name = "ConcurrentLabel";
             this.ConcurrentLabel.Size = new System.Drawing.Size(168, 20);
             this.ConcurrentLabel.TabIndex = 29;
@@ -1110,7 +1191,7 @@
             // ConcurrentBox
             // 
             this.ConcurrentBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ConcurrentBox.Location = new System.Drawing.Point(724, 416);
+            this.ConcurrentBox.Location = new System.Drawing.Point(724, 475);
             this.ConcurrentBox.Name = "ConcurrentBox";
             this.ConcurrentBox.Size = new System.Drawing.Size(72, 26);
             this.ConcurrentBox.TabIndex = 28;
@@ -1119,7 +1200,7 @@
             // 
             this.TurnLabel.AutoSize = true;
             this.TurnLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TurnLabel.Location = new System.Drawing.Point(19, 453);
+            this.TurnLabel.Location = new System.Drawing.Point(19, 512);
             this.TurnLabel.Name = "TurnLabel";
             this.TurnLabel.Size = new System.Drawing.Size(45, 20);
             this.TurnLabel.TabIndex = 27;
@@ -1129,7 +1210,7 @@
             // 
             this.TurnBox.DecimalPlaces = 2;
             this.TurnBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TurnBox.Location = new System.Drawing.Point(127, 451);
+            this.TurnBox.Location = new System.Drawing.Point(127, 510);
             this.TurnBox.Name = "TurnBox";
             this.TurnBox.Size = new System.Drawing.Size(72, 26);
             this.TurnBox.TabIndex = 26;
@@ -1138,7 +1219,7 @@
             // 
             this.AccelLabel.AutoSize = true;
             this.AccelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AccelLabel.Location = new System.Drawing.Point(19, 496);
+            this.AccelLabel.Location = new System.Drawing.Point(19, 555);
             this.AccelLabel.Name = "AccelLabel";
             this.AccelLabel.Size = new System.Drawing.Size(101, 20);
             this.AccelLabel.TabIndex = 25;
@@ -1148,7 +1229,7 @@
             // 
             this.AccelBox.DecimalPlaces = 2;
             this.AccelBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AccelBox.Location = new System.Drawing.Point(127, 494);
+            this.AccelBox.Location = new System.Drawing.Point(127, 553);
             this.AccelBox.Name = "AccelBox";
             this.AccelBox.Size = new System.Drawing.Size(72, 26);
             this.AccelBox.TabIndex = 24;
@@ -1157,7 +1238,7 @@
             // 
             this.MinSpeedLabel.AutoSize = true;
             this.MinSpeedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MinSpeedLabel.Location = new System.Drawing.Point(232, 410);
+            this.MinSpeedLabel.Location = new System.Drawing.Point(232, 469);
             this.MinSpeedLabel.Name = "MinSpeedLabel";
             this.MinSpeedLabel.Size = new System.Drawing.Size(89, 20);
             this.MinSpeedLabel.TabIndex = 23;
@@ -1173,7 +1254,7 @@
             0,
             0,
             65536});
-            this.MinSpeedBox.Location = new System.Drawing.Point(336, 408);
+            this.MinSpeedBox.Location = new System.Drawing.Point(336, 467);
             this.MinSpeedBox.Name = "MinSpeedBox";
             this.MinSpeedBox.Size = new System.Drawing.Size(72, 26);
             this.MinSpeedBox.TabIndex = 22;
@@ -1183,7 +1264,7 @@
             // 
             this.SpeedLabel.AutoSize = true;
             this.SpeedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SpeedLabel.Location = new System.Drawing.Point(19, 410);
+            this.SpeedLabel.Location = new System.Drawing.Point(19, 469);
             this.SpeedLabel.Name = "SpeedLabel";
             this.SpeedLabel.Size = new System.Drawing.Size(60, 20);
             this.SpeedLabel.TabIndex = 21;
@@ -1193,7 +1274,7 @@
             // 
             this.SpeedBox.DecimalPlaces = 2;
             this.SpeedBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SpeedBox.Location = new System.Drawing.Point(127, 408);
+            this.SpeedBox.Location = new System.Drawing.Point(127, 467);
             this.SpeedBox.Name = "SpeedBox";
             this.SpeedBox.Size = new System.Drawing.Size(72, 26);
             this.SpeedBox.TabIndex = 20;
@@ -1202,7 +1283,7 @@
             // 
             this.RegenLabel.AutoSize = true;
             this.RegenLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RegenLabel.Location = new System.Drawing.Point(556, 371);
+            this.RegenLabel.Location = new System.Drawing.Point(556, 430);
             this.RegenLabel.Name = "RegenLabel";
             this.RegenLabel.Size = new System.Drawing.Size(158, 20);
             this.RegenLabel.TabIndex = 19;
@@ -1212,7 +1293,7 @@
             // 
             this.RegenBox.DecimalPlaces = 1;
             this.RegenBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RegenBox.Location = new System.Drawing.Point(724, 369);
+            this.RegenBox.Location = new System.Drawing.Point(724, 428);
             this.RegenBox.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -1227,7 +1308,7 @@
             // 
             this.ShieldLabel.AutoSize = true;
             this.ShieldLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ShieldLabel.Location = new System.Drawing.Point(19, 367);
+            this.ShieldLabel.Location = new System.Drawing.Point(19, 426);
             this.ShieldLabel.Name = "ShieldLabel";
             this.ShieldLabel.Size = new System.Drawing.Size(105, 20);
             this.ShieldLabel.TabIndex = 17;
@@ -1241,7 +1322,7 @@
             0,
             0,
             0});
-            this.ShieldBox.Location = new System.Drawing.Point(127, 365);
+            this.ShieldBox.Location = new System.Drawing.Point(127, 424);
             this.ShieldBox.Maximum = new decimal(new int[] {
             999999999,
             0,
@@ -1256,7 +1337,7 @@
             // 
             this.STypeLabel.AutoSize = true;
             this.STypeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.STypeLabel.Location = new System.Drawing.Point(232, 367);
+            this.STypeLabel.Location = new System.Drawing.Point(232, 426);
             this.STypeLabel.Name = "STypeLabel";
             this.STypeLabel.Size = new System.Drawing.Size(95, 20);
             this.STypeLabel.TabIndex = 15;
@@ -1267,7 +1348,7 @@
             this.STypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.STypeComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.STypeComboBox.FormattingEnabled = true;
-            this.STypeComboBox.Location = new System.Drawing.Point(336, 363);
+            this.STypeComboBox.Location = new System.Drawing.Point(336, 422);
             this.STypeComboBox.Name = "STypeComboBox";
             this.STypeComboBox.Size = new System.Drawing.Size(207, 28);
             this.STypeComboBox.TabIndex = 14;
@@ -1277,7 +1358,7 @@
             // 
             this.ATypeLabel.AutoSize = true;
             this.ATypeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ATypeLabel.Location = new System.Drawing.Point(232, 323);
+            this.ATypeLabel.Location = new System.Drawing.Point(232, 382);
             this.ATypeLabel.Name = "ATypeLabel";
             this.ATypeLabel.Size = new System.Drawing.Size(94, 20);
             this.ATypeLabel.TabIndex = 13;
@@ -1288,7 +1369,7 @@
             this.ATypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ATypeComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ATypeComboBox.FormattingEnabled = true;
-            this.ATypeComboBox.Location = new System.Drawing.Point(336, 320);
+            this.ATypeComboBox.Location = new System.Drawing.Point(336, 379);
             this.ATypeComboBox.Name = "ATypeComboBox";
             this.ATypeComboBox.Size = new System.Drawing.Size(207, 28);
             this.ATypeComboBox.TabIndex = 12;
@@ -1298,7 +1379,7 @@
             // 
             this.BuildTimeLabel.AutoSize = true;
             this.BuildTimeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BuildTimeLabel.Location = new System.Drawing.Point(16, 159);
+            this.BuildTimeLabel.Location = new System.Drawing.Point(16, 218);
             this.BuildTimeLabel.Name = "BuildTimeLabel";
             this.BuildTimeLabel.Size = new System.Drawing.Size(110, 20);
             this.BuildTimeLabel.TabIndex = 11;
@@ -1312,7 +1393,7 @@
             0,
             0,
             0});
-            this.BuildTimeBox.Location = new System.Drawing.Point(129, 157);
+            this.BuildTimeBox.Location = new System.Drawing.Point(129, 216);
             this.BuildTimeBox.Maximum = new decimal(new int[] {
             9999,
             0,
@@ -1326,7 +1407,7 @@
             // 
             this.CostLabel.AutoSize = true;
             this.CostLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CostLabel.Location = new System.Drawing.Point(16, 125);
+            this.CostLabel.Location = new System.Drawing.Point(16, 184);
             this.CostLabel.Name = "CostLabel";
             this.CostLabel.Size = new System.Drawing.Size(46, 20);
             this.CostLabel.TabIndex = 9;
@@ -1340,7 +1421,7 @@
             0,
             0,
             0});
-            this.CostBox.Location = new System.Drawing.Point(129, 123);
+            this.CostBox.Location = new System.Drawing.Point(129, 182);
             this.CostBox.Maximum = new decimal(new int[] {
             9999999,
             0,
@@ -1354,7 +1435,7 @@
             // 
             this.PopLabel.AutoSize = true;
             this.PopLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PopLabel.Location = new System.Drawing.Point(15, 89);
+            this.PopLabel.Location = new System.Drawing.Point(15, 148);
             this.PopLabel.Name = "PopLabel";
             this.PopLabel.Size = new System.Drawing.Size(88, 20);
             this.PopLabel.TabIndex = 7;
@@ -1363,7 +1444,7 @@
             // PopBox
             // 
             this.PopBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PopBox.Location = new System.Drawing.Point(128, 87);
+            this.PopBox.Location = new System.Drawing.Point(128, 146);
             this.PopBox.Maximum = new decimal(new int[] {
             9999,
             0,
@@ -1377,7 +1458,7 @@
             // 
             this.GUIRowLabel.AutoSize = true;
             this.GUIRowLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GUIRowLabel.Location = new System.Drawing.Point(250, 84);
+            this.GUIRowLabel.Location = new System.Drawing.Point(250, 143);
             this.GUIRowLabel.Name = "GUIRowLabel";
             this.GUIRowLabel.Size = new System.Drawing.Size(84, 20);
             this.GUIRowLabel.TabIndex = 5;
@@ -1391,7 +1472,7 @@
             this.GUIRowComboBox.Items.AddRange(new object[] {
             "Top Row",
             "Bottom Row"});
-            this.GUIRowComboBox.Location = new System.Drawing.Point(340, 81);
+            this.GUIRowComboBox.Location = new System.Drawing.Point(340, 140);
             this.GUIRowComboBox.Name = "GUIRowComboBox";
             this.GUIRowComboBox.Size = new System.Drawing.Size(121, 28);
             this.GUIRowComboBox.TabIndex = 4;
@@ -1400,7 +1481,7 @@
             // 
             this.hpLabel.AutoSize = true;
             this.hpLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hpLabel.Location = new System.Drawing.Point(19, 324);
+            this.hpLabel.Location = new System.Drawing.Point(19, 383);
             this.hpLabel.Name = "hpLabel";
             this.hpLabel.Size = new System.Drawing.Size(81, 20);
             this.hpLabel.TabIndex = 3;
@@ -1414,7 +1495,7 @@
             0,
             0,
             0});
-            this.hpBox.Location = new System.Drawing.Point(127, 322);
+            this.hpBox.Location = new System.Drawing.Point(127, 381);
             this.hpBox.Maximum = new decimal(new int[] {
             999999999,
             0,
@@ -1429,7 +1510,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(15, 288);
+            this.label6.Location = new System.Drawing.Point(15, 347);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(424, 20);
             this.label6.TabIndex = 1;
@@ -1439,7 +1520,7 @@
             // 
             this.StatTemplateCheckBox.AutoSize = true;
             this.StatTemplateCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.StatTemplateCheckBox.Location = new System.Drawing.Point(17, 56);
+            this.StatTemplateCheckBox.Location = new System.Drawing.Point(102, 58);
             this.StatTemplateCheckBox.Name = "StatTemplateCheckBox";
             this.StatTemplateCheckBox.Size = new System.Drawing.Size(306, 24);
             this.StatTemplateCheckBox.TabIndex = 0;
@@ -1626,6 +1707,360 @@
             this.UnitCopyFileComboBox.Size = new System.Drawing.Size(476, 28);
             this.UnitCopyFileComboBox.TabIndex = 0;
             // 
+            // HeroCreateTab
+            // 
+            this.HeroCreateTab.Controls.Add(this.HeroCreatePanel);
+            this.HeroCreateTab.Location = new System.Drawing.Point(4, 22);
+            this.HeroCreateTab.Name = "HeroCreateTab";
+            this.HeroCreateTab.Size = new System.Drawing.Size(920, 634);
+            this.HeroCreateTab.TabIndex = 3;
+            this.HeroCreateTab.Text = "Create Hero";
+            this.HeroCreateTab.UseVisualStyleBackColor = true;
+            // 
+            // HeroCreatePanel
+            // 
+            this.HeroCreatePanel.AutoScroll = true;
+            this.HeroCreatePanel.Controls.Add(this.button5);
+            this.HeroCreatePanel.Controls.Add(this.label26);
+            this.HeroCreatePanel.Controls.Add(this.comboBox2);
+            this.HeroCreatePanel.Controls.Add(this.label25);
+            this.HeroCreatePanel.Controls.Add(this.numericUpDown1);
+            this.HeroCreatePanel.Controls.Add(this.checkBox4);
+            this.HeroCreatePanel.Controls.Add(this.listBox1);
+            this.HeroCreatePanel.Controls.Add(this.checkBox3);
+            this.HeroCreatePanel.Controls.Add(this.label24);
+            this.HeroCreatePanel.Controls.Add(this.label23);
+            this.HeroCreatePanel.Controls.Add(this.pictureBox1);
+            this.HeroCreatePanel.Controls.Add(this.button4);
+            this.HeroCreatePanel.Controls.Add(this.button3);
+            this.HeroCreatePanel.Controls.Add(this.textBox5);
+            this.HeroCreatePanel.Controls.Add(this.richTextBox2);
+            this.HeroCreatePanel.Controls.Add(this.button2);
+            this.HeroCreatePanel.Controls.Add(this.label22);
+            this.HeroCreatePanel.Controls.Add(this.label21);
+            this.HeroCreatePanel.Controls.Add(this.textBox4);
+            this.HeroCreatePanel.Controls.Add(this.checkBox2);
+            this.HeroCreatePanel.Controls.Add(this.label17);
+            this.HeroCreatePanel.Controls.Add(this.richTextBox1);
+            this.HeroCreatePanel.Controls.Add(this.label18);
+            this.HeroCreatePanel.Controls.Add(this.textBox1);
+            this.HeroCreatePanel.Controls.Add(this.label19);
+            this.HeroCreatePanel.Controls.Add(this.textBox2);
+            this.HeroCreatePanel.Controls.Add(this.label20);
+            this.HeroCreatePanel.Controls.Add(this.NewHeroFileTextBox);
+            this.HeroCreatePanel.Controls.Add(this.NewHeroFileCheckBox);
+            this.HeroCreatePanel.Controls.Add(this.HeroCopyFileComboBox);
+            this.HeroCreatePanel.Location = new System.Drawing.Point(3, 3);
+            this.HeroCreatePanel.Name = "HeroCreatePanel";
+            this.HeroCreatePanel.Size = new System.Drawing.Size(914, 628);
+            this.HeroCreatePanel.TabIndex = 30;
+            // 
+            // button5
+            // 
+            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button5.Location = new System.Drawing.Point(334, 529);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(110, 31);
+            this.button5.TabIndex = 103;
+            this.button5.Text = "Rank Tier...";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label26.Location = new System.Drawing.Point(591, 529);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(111, 20);
+            this.label26.TabIndex = 102;
+            this.label26.Text = "Specialization:";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "None",
+            "Clone Hatred",
+            "Air Command Specialist",
+            "Artillery Specialist",
+            "Fortification Specialist",
+            "Starfighter Specialist",
+            "Small Ship Commander",
+            "Walker Specialist",
+            "Jedi Advisor",
+            "Infantry Specialist",
+            "Cooperative"});
+            this.comboBox2.Location = new System.Drawing.Point(708, 526);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 28);
+            this.comboBox2.TabIndex = 101;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label25.Location = new System.Drawing.Point(21, 534);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(116, 20);
+            this.label25.TabIndex = 100;
+            this.label25.Text = "Command Tier:";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDown1.Location = new System.Drawing.Point(208, 532);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            11,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 26);
+            this.numericUpDown1.TabIndex = 99;
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox4.Location = new System.Drawing.Point(570, 390);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(192, 24);
+            this.checkBox4.TabIndex = 98;
+            this.checkBox4.Text = "Standard Fighter Mode";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBox4.Visible = false;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(208, 390);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(353, 134);
+            this.listBox1.TabIndex = 97;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox3.Location = new System.Drawing.Point(26, 403);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(184, 24);
+            this.checkBox3.TabIndex = 96;
+            this.checkBox3.Text = "Custom Fighter Setup";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.Location = new System.Drawing.Point(205, 334);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(367, 16);
+            this.label24.TabIndex = 95;
+            this.label24.Text = "Optionally copy the fighters of this unit instead of the base unit";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label23.Location = new System.Drawing.Point(22, 361);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(181, 20);
+            this.label23.TabIndex = 94;
+            this.label23.Text = "Fighter Source Override:";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(25, 245);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(75, 75);
+            this.pictureBox1.TabIndex = 93;
+            this.pictureBox1.TabStop = false;
+            // 
+            // button4
+            // 
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Location = new System.Drawing.Point(16, 326);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(130, 31);
+            this.button4.TabIndex = 92;
+            this.button4.Text = "Change Icon...";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.Location = new System.Drawing.Point(708, 353);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(158, 31);
+            this.button3.TabIndex = 48;
+            this.button3.Text = "Set Fighter Source";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // textBox5
+            // 
+            this.textBox5.Enabled = false;
+            this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox5.Location = new System.Drawing.Point(208, 358);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(485, 26);
+            this.textBox5.TabIndex = 46;
+            // 
+            // richTextBox2
+            // 
+            this.richTextBox2.Location = new System.Drawing.Point(123, 630);
+            this.richTextBox2.Name = "richTextBox2";
+            this.richTextBox2.Size = new System.Drawing.Size(616, 95);
+            this.richTextBox2.TabIndex = 45;
+            this.richTextBox2.Text = "";
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(708, 91);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(158, 31);
+            this.button2.TabIndex = 44;
+            this.button2.Text = "Set Base Unit";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label22.Location = new System.Drawing.Point(23, 74);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(538, 16);
+            this.label22.TabIndex = 43;
+            this.label22.Text = "Copy, stats, model, and abilities other than command and economic bonuses from th" +
+    "is unit";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.Location = new System.Drawing.Point(22, 96);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(83, 20);
+            this.label21.TabIndex = 42;
+            this.label21.Text = "Base Unit:";
+            // 
+            // textBox4
+            // 
+            this.textBox4.Enabled = false;
+            this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox4.Location = new System.Drawing.Point(208, 93);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(485, 26);
+            this.textBox4.TabIndex = 41;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox2.Location = new System.Drawing.Point(710, 15);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(123, 24);
+            this.checkBox2.TabIndex = 40;
+            this.checkBox2.Text = "Generic Hero";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.Visible = false;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(22, 222);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(124, 20);
+            this.label17.TabIndex = 39;
+            this.label17.Text = "New Description";
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(208, 220);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(658, 105);
+            this.richTextBox1.TabIndex = 38;
+            this.richTextBox1.Text = "";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Location = new System.Drawing.Point(22, 173);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(180, 20);
+            this.label18.TabIndex = 37;
+            this.label18.Text = "New User Facing Name:";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(208, 170);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(485, 26);
+            this.textBox1.TabIndex = 36;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(22, 135);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(129, 20);
+            this.label19.TabIndex = 35;
+            this.label19.Text = "New Hero Name:";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox2.Location = new System.Drawing.Point(208, 132);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(485, 26);
+            this.textBox2.TabIndex = 34;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Location = new System.Drawing.Point(21, 14);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(147, 20);
+            this.label20.TabIndex = 33;
+            this.label20.Text = "File to copy hero to:";
+            // 
+            // NewHeroFileTextBox
+            // 
+            this.NewHeroFileTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NewHeroFileTextBox.Location = new System.Drawing.Point(208, 42);
+            this.NewHeroFileTextBox.Name = "NewHeroFileTextBox";
+            this.NewHeroFileTextBox.Size = new System.Drawing.Size(485, 26);
+            this.NewHeroFileTextBox.TabIndex = 32;
+            // 
+            // NewHeroFileCheckBox
+            // 
+            this.NewHeroFileCheckBox.AutoSize = true;
+            this.NewHeroFileCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NewHeroFileCheckBox.Location = new System.Drawing.Point(26, 44);
+            this.NewHeroFileCheckBox.Name = "NewHeroFileCheckBox";
+            this.NewHeroFileCheckBox.Size = new System.Drawing.Size(179, 24);
+            this.NewHeroFileCheckBox.TabIndex = 31;
+            this.NewHeroFileCheckBox.Text = "Create New Hero File";
+            this.NewHeroFileCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // HeroCopyFileComboBox
+            // 
+            this.HeroCopyFileComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.HeroCopyFileComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HeroCopyFileComboBox.FormattingEnabled = true;
+            this.HeroCopyFileComboBox.Location = new System.Drawing.Point(208, 11);
+            this.HeroCopyFileComboBox.Name = "HeroCopyFileComboBox";
+            this.HeroCopyFileComboBox.Size = new System.Drawing.Size(485, 28);
+            this.HeroCopyFileComboBox.TabIndex = 30;
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -1784,26 +2219,6 @@
             this.contextMenuStrip2.Name = "contextMenuStrip2";
             this.contextMenuStrip2.Size = new System.Drawing.Size(61, 4);
             // 
-            // VariantChainLabel
-            // 
-            this.VariantChainLabel.AutoSize = true;
-            this.VariantChainLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.VariantChainLabel.Location = new System.Drawing.Point(17, 10);
-            this.VariantChainLabel.Name = "VariantChainLabel";
-            this.VariantChainLabel.Size = new System.Drawing.Size(10, 13);
-            this.VariantChainLabel.TabIndex = 88;
-            this.VariantChainLabel.Text = ".";
-            // 
-            // VariantLabel
-            // 
-            this.VariantLabel.AutoSize = true;
-            this.VariantLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.VariantLabel.Location = new System.Drawing.Point(16, 35);
-            this.VariantLabel.Name = "VariantLabel";
-            this.VariantLabel.Size = new System.Drawing.Size(10, 13);
-            this.VariantLabel.TabIndex = 89;
-            this.VariantLabel.Text = ".";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1836,6 +2251,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.InfluenceNumericUpDown)).EndInit();
             this.StatsTab.ResumeLayout(false);
             this.StatsTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.IconPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RangeAdjustBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.AccTierBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PopCalcBox)).EndInit();
@@ -1856,6 +2272,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.hpBox)).EndInit();
             this.UnitCopyTab.ResumeLayout(false);
             this.UnitCopyTab.PerformLayout();
+            this.HeroCreateTab.ResumeLayout(false);
+            this.HeroCreatePanel.ResumeLayout(false);
+            this.HeroCreatePanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1995,6 +2416,40 @@
         private System.Windows.Forms.Label HPExamineFinePrintLabel;
         private System.Windows.Forms.Label VariantLabel;
         private System.Windows.Forms.Label VariantChainLabel;
+        private System.Windows.Forms.Button ChangeIconButtonStats;
+        private System.Windows.Forms.PictureBox IconPictureBox;
+        private System.Windows.Forms.TabPage HeroCreateTab;
+        private System.Windows.Forms.Panel HeroCreatePanel;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox NewHeroFileTextBox;
+        private System.Windows.Forms.CheckBox NewHeroFileCheckBox;
+        private System.Windows.Forms.ComboBox HeroCopyFileComboBox;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.RichTextBox richTextBox2;
     }
 }
 

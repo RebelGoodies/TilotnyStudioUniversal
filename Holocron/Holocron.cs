@@ -62,6 +62,7 @@ using static SharedFunctions;
 keep history updated whenever a tab or subtab is implemented
 there might be a bit of oddness in the history tracking when factions share a name
 
+//Shadow and Dark Stromtrooper platoons think they have terrain maps despite none of their constituent parts agreeing
 
 
 auto parse sfx for bts comments? go through file, saving last comment that doesn't have asterisks, when finding a unit SFX stop. Maybe keep a minimum distance
@@ -222,9 +223,24 @@ namespace Holocron
                 localmodtest = UpOneFolder(UpOneFolder(localmodtest)) + "\\common\\Star Wars Empire at War\\corruption";
                 if (File.Exists(localmodtest + "\\StarWarsG.exe"))
                 {
-                    if (entities.modpaths.Count == 0) entities.modpaths.Add(modfolder);
-                    globals.steammodpath = UpOneFolder(UpOneFolder(modfolder));
-                    globals.localmodpath = localmodtest + "\\Mods";
+                    if (Directory.Exists(modfolder + "\\..\\TR") && Directory.Exists(modfolder + "\\..\\FotR") && Directory.Exists(modfolder + "\\..\\CoreSaga") && Directory.Exists(modfolder + "\\..\\Rev"))
+                    {
+                        DevChoice devChoice = new DevChoice();
+                        devChoice.basepath = UpOneFolder(modfolder);
+                        devChoice.ShowDialog();
+
+                        entities.modpaths = devChoice.args;
+                        globals.allplanets = devChoice.allplanet;
+                        globals.devmode = true;
+                        globals.steammodpath = UpOneFolder(UpOneFolder(modfolder));
+                        globals.localmodpath = localmodtest + "\\Mods";
+                    }
+                    else
+                    {
+                        if (entities.modpaths.Count == 0) entities.modpaths.Add(modfolder);
+                        globals.steammodpath = UpOneFolder(UpOneFolder(modfolder));
+                        globals.localmodpath = localmodtest + "\\Mods";
+                    }
                 }
                 else
                 {//Run on real mod data from the debugger
@@ -338,6 +354,7 @@ namespace Holocron
             loadscreen.ChangeText("Reading text file");
             entities.Text = DatParser.ReadDat(getModFile("Text\\MasterTextFile_ENGLISH.dat", entities), ',', 0);
             loadscreen.SetQuote(getLoadQuote(entities));
+            crcGlobals.initTable();
 
             loadscreen.BeginInvoke(new Action(() => loadscreen.TopMost = false)); //Make sure it's initially on top, but then let other windows win
 
@@ -351,6 +368,10 @@ namespace Holocron
             try
             {
                 entities.MTmaster = (Bitmap)Image.FromFile(getModFile("Art\\Textures\\MT_CommandBar.tga", entities));
+                /*using (var bmpTemp = new Bitmap(getModFile("Art\\Textures\\MT_CommandBar.tga", entities))) //The above doesn't release file locks properly. It also mysteriously resizes the icons, which is how all the boxes were originally sized and gives more color to look at
+                {
+                    entities.MTmaster = new Bitmap(bmpTemp);
+                }*/
             }
             catch
             {
@@ -3637,6 +3658,9 @@ namespace Holocron
                         }
                     }
                     else unit.sortfloat = 0;
+                    break;
+                case UnitSortTypes.crc:
+                    unit.sortfloat = Text_Entry.calculateCRC(unit.unitname.ToUpper());
                     break;
             }
 
@@ -7655,8 +7679,15 @@ namespace Holocron
             SetGalaxyMapBackground();
         }
 
+        private void GalaxyMapEraBox_ValueChanged(object sender, EventArgs e)
+        {
+            GalaxyMapEraRB.Checked = true;
+            SetGalaxyMapBackground();
+        }
+
         private void GalaxyMapGCFactionBox_ValueChanged(object sender, EventArgs e)
         {
+            if ((bool)GalaxyMapGCComboBox.Tag) GalaxyMapGCRB.Checked = true;
             int factionindex = GalaxyMapGCFactionBox.SelectedIndex;
             List<planet> affiled = new List<planet>();
 
@@ -7752,11 +7783,14 @@ namespace Holocron
             if (globals.map_mouse_down && !globals.map_box_select)
             {
                 MouseEventArgs me = (MouseEventArgs)e;
-                globals.map_x += me.X - globals.map_mouse_x;
-                globals.map_y += me.Y - globals.map_mouse_y;
-                SetGalaxyMapBackground();
-                globals.map_mouse_x = me.X;
-                globals.map_mouse_y = me.Y;
+                if(Math.Abs(me.X - globals.map_mouse_x) > 50 || Math.Abs(me.Y - globals.map_mouse_y) > 50)
+                {
+                    globals.map_x += me.X - globals.map_mouse_x;
+                    globals.map_y += me.Y - globals.map_mouse_y;
+                    SetGalaxyMapBackground();
+                    globals.map_mouse_x = me.X;
+                    globals.map_mouse_y = me.Y;
+                }
             }
         }
 
@@ -7812,21 +7846,25 @@ namespace Holocron
 
                 int xbounds = (int)(max_x - min_x);
                 int ybounds = (int)(max_y - min_y);
-                if (xbounds < 5 || ybounds < 5) return; //Don't crash dividing 
-                int zoom_x = (int)(GalaxyMapPictureBox.Width * 100 / xbounds); //This does crop to fit the entire bounding square as seen on the planet tab.
-                int zoom_y = (int)(GalaxyMapPictureBox.Height * 100 / ybounds); //Outliers on one coordinate will mean there may be gaps on some sides
-                if (zoom_x < zoom_y)
+                try
                 {
-                    GalaxyMapZoomBox.Value = zoom_x;
-                    globals.map_x = (int)(entities.PlanetBounds + min_x) + globals.map_extra_edge / 2;
-                    globals.map_y = (int)(entities.PlanetBounds + min_y) + (ybounds - GalaxyMapPictureBox.Height * 100 / zoom_x) / 2 + globals.map_extra_edge / 2;
+                    if (xbounds < 5 || ybounds < 5) return; //Don't crash dividing 
+                    int zoom_x = (int)(GalaxyMapPictureBox.Width * 100 / xbounds); //This does crop to fit the entire bounding square as seen on the planet tab.
+                    int zoom_y = (int)(GalaxyMapPictureBox.Height * 100 / ybounds); //Outliers on one coordinate will mean there may be gaps on some sides
+                    if (zoom_x < zoom_y)
+                    {
+                        GalaxyMapZoomBox.Value = zoom_x;
+                        globals.map_x = (int)(entities.PlanetBounds + min_x) + globals.map_extra_edge / 2;
+                        globals.map_y = (int)(entities.PlanetBounds + min_y) + (ybounds - GalaxyMapPictureBox.Height * 100 / zoom_x) / 2 + globals.map_extra_edge / 2;
+                    }
+                    else
+                    {
+                        GalaxyMapZoomBox.Value = zoom_y;
+                        globals.map_x = (int)(entities.PlanetBounds + min_x) + (xbounds - GalaxyMapPictureBox.Width * 100 / zoom_y) / 2 + globals.map_extra_edge / 2;
+                        globals.map_y = (int)(entities.PlanetBounds + min_y) + globals.map_extra_edge / 2;
+                    }
                 }
-                else
-                {
-                    GalaxyMapZoomBox.Value = zoom_y;
-                    globals.map_x = (int)(entities.PlanetBounds + min_x) + (xbounds - GalaxyMapPictureBox.Width * 100 / zoom_y) / 2 + globals.map_extra_edge / 2;
-                    globals.map_y = (int)(entities.PlanetBounds + min_y) + globals.map_extra_edge / 2;
-                }
+                catch { };
                 SetGalaxyMapBackground();
             }
         }
@@ -7932,6 +7970,7 @@ namespace Holocron
 
         private void setMapGCOptions()
         {
+            GalaxyMapGCComboBox.Tag = false;
             GalaxyMapGCComboBox.Items.Clear();
             foreach (galacticConquest GC in entities.Conquests)
             {
@@ -7943,6 +7982,7 @@ namespace Holocron
                 if (add) GalaxyMapGCComboBox.Items.Add(GC);
             }
             if (GalaxyMapGCComboBox.Items.Count > 0) GalaxyMapGCComboBox.SelectedIndex = 0;
+            GalaxyMapGCComboBox.Tag = true;
         }
 
         private void setMapActiveFaction()
@@ -7961,6 +8001,7 @@ namespace Holocron
 
         private void GalaxyMapGCComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if((bool)GalaxyMapGCComboBox.Tag) GalaxyMapGCRB.Checked = true;
             setMapActiveFaction();
             SetGalaxyMapBackground();
         }
@@ -8079,9 +8120,10 @@ namespace Holocron
 
         private void GCMapControlsButton_Click(object sender, EventArgs e)
         {
-            TextDetail deets = new TextDetail();
-            deets.detail = "Mouse Wheel - Pan Up/Down\nShift + Wheel - Pan Left/Right\nCtrl + Wheel - Zoom In/Out\nMiddle Click - Hold to Pan\nLeft Click - Drag area to zoom to\nRight Click - Save Image\n\n\nWASD - Pan\nQ/E - Zoom In/Out\nR - Reset Zoom\nF - Fit All\n\n\nArrows - Pan\nHome/PgUp - Zoom In/Out\nEnter - Reset Zoom\nInsert - Fit All";
-            deets.Show();
+            GCMapControlsLabel.Visible ^= true;
+            //TextDetail deets = new TextDetail();
+            //deets.detail = "Mouse Wheel - Pan Up/Down\nShift + Wheel - Pan Left/Right\nCtrl + Wheel - Zoom In/Out\nMiddle Click - Hold to Pan\nLeft Click - Drag area to zoom to\nRight Click - Save Image\n\n\nWASD - Pan\nQ/E - Zoom In/Out\nR - Reset Zoom\nF - Fit All\n\n\nArrows - Pan\nHome/PgUp - Zoom In/Out\nEnter - Reset Zoom\nInsert - Fit All";
+            //deets.Show();
         }
 
         private void IconPictureBox_Click(object sender, EventArgs e)
@@ -8100,6 +8142,12 @@ namespace Holocron
                 fil.FileName = selectedUnit.icon;
                 if (fil.ShowDialog() == DialogResult.OK)
                 {
+                    IconData icondata = DatParser.GetIconData(selectedUnit.icon, entities);
+                    Image export = new Bitmap(icondata.size_x, icondata.size_y);
+                    using (Graphics g = Graphics.FromImage(export))
+                    {
+                        g.DrawImage(entities.MTmaster, new Rectangle(0, 0, icondata.size_x, icondata.size_y), new Rectangle(icondata.origin_x, icondata.origin_y, icondata.size_x, icondata.size_y), GraphicsUnit.Pixel);
+                    }
                     System.Drawing.Imaging.ImageFormat format = System.Drawing.Imaging.ImageFormat.Bmp;
                     switch (fil.FilterIndex)
                     {
@@ -8110,7 +8158,7 @@ namespace Holocron
                             format = System.Drawing.Imaging.ImageFormat.Jpeg;
                             break;
                     }
-                    IconPictureBox.Image.Save(fil.FileName, format);
+                    export.Save(fil.FileName, format);
                     MessageBox.Show("Image saved");
                 }
             }
@@ -8132,6 +8180,12 @@ namespace Holocron
                 fil.FileName = able.icon;
                 if (fil.ShowDialog() == DialogResult.OK)
                 {
+                    IconData icondata = DatParser.GetIconData(able.icon, entities);
+                    Image export = new Bitmap(icondata.size_x, icondata.size_y);
+                    using (Graphics g = Graphics.FromImage(export))
+                    {
+                        g.DrawImage(entities.MTmaster, new Rectangle(0, 0, icondata.size_x, icondata.size_y), new Rectangle(icondata.origin_x, icondata.origin_y, icondata.size_x, icondata.size_y), GraphicsUnit.Pixel);
+                    }
                     System.Drawing.Imaging.ImageFormat format = System.Drawing.Imaging.ImageFormat.Bmp;
                     switch (fil.FilterIndex)
                     {
@@ -8142,7 +8196,7 @@ namespace Holocron
                             format = System.Drawing.Imaging.ImageFormat.Jpeg;
                             break;
                     }
-                    IconPictureBox.Image.Save(fil.FileName, format);
+                    export.Save(fil.FileName, format);
                     MessageBox.Show("Image saved");
                 }
             }
@@ -8199,6 +8253,74 @@ namespace Holocron
                 }
                 MessageBox.Show("Error list saved to file");
             }
+        }
+
+        private void crcCalculatorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CRCcalc circ = new CRCcalc();
+            circ.Show();
+        }
+
+        private void GCgotoMapButton_Click(object sender, EventArgs e)
+        {
+            if(GCListBox.SelectedItems.Count > 0)
+            {
+                MainTab.SelectedIndex = (int)historymaintabs.galaxy;
+                GalaxyMapGCComboBox.SelectedItem = GCListBox.SelectedItem;
+                GalaxyMapGCRB.Checked = true;
+                FitAll();
+            }
+        }
+
+        private void HighlightRichText(string word, RichTextBox box)
+        {
+            box.SelectionStart = 0;
+            box.SelectAll();
+            box.SelectionBackColor = Color.White;
+            int startindex = 0;
+            bool furst = true;
+            while (startindex < box.TextLength)
+            {
+                int wordstartIndex = box.Find(word, startindex, RichTextBoxFinds.None);
+                if (wordstartIndex != -1)
+                {
+                    box.SelectionStart = wordstartIndex;
+                    box.SelectionLength = word.Length;
+                    box.SelectionBackColor = Color.Yellow;
+                    if (furst)
+                    {
+                        box.ScrollToCaret();
+                        furst = false;
+                    }
+                }
+                else break;
+                startindex = wordstartIndex + word.Length;
+            }
+        }
+
+        private void NameSearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightRichText(NameSearchTextBox.Text, NameText);
+        }
+
+        private void MissionSearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightRichText(MissionSearchTextBox.Text, MissionText);
+        }
+
+        private void SpawnListSearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightRichText(SpawnListSearchTextBox.Text, SpawnText);
+        }
+
+        private void StandardFSearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightRichText(StandardFSearchTextBox.Text, StandardFText);
+        }
+
+        private void RandomFSearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightRichText(RandomFSearchTextBox.Text, RandomFText);
         }
 
         //Don't put any functions below here if you want it to still compile

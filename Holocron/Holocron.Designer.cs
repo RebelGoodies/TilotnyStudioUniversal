@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Holocron));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -39,6 +39,7 @@
             this.forwardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.submodsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.readErrorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.crcCalculatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabLookups = new System.Windows.Forms.TabPage();
             this.LookupTabControl = new System.Windows.Forms.TabControl();
             this.MatrixTab = new System.Windows.Forms.TabPage();
@@ -66,6 +67,8 @@
             this.ShipnameSearchTextBox = new System.Windows.Forms.TextBox();
             this.ShipnameListBox = new System.Windows.Forms.ListBox();
             this.NameFileTab = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.NameSearchTextBox = new System.Windows.Forms.TextBox();
             this.NameText = new System.Windows.Forms.RichTextBox();
             this.NameListBox = new System.Windows.Forms.ListBox();
             this.MissionTab = new System.Windows.Forms.TabPage();
@@ -330,6 +333,7 @@
             this.tabGCs = new System.Windows.Forms.TabPage();
             this.GCListBox = new System.Windows.Forms.ListBox();
             this.GCPanel = new System.Windows.Forms.Panel();
+            this.GCgotoMapButton = new System.Windows.Forms.Button();
             this.GCMapSortByLabel = new System.Windows.Forms.Label();
             this.GCMapSortNameRB = new System.Windows.Forms.RadioButton();
             this.GCMapSortNearestRB = new System.Windows.Forms.RadioButton();
@@ -418,7 +422,11 @@
             this.FactionListBox = new System.Windows.Forms.ListBox();
             this.MainTab = new System.Windows.Forms.TabControl();
             this.tabGov = new System.Windows.Forms.TabPage();
+            this.GovernmentTabControl = new System.Windows.Forms.TabControl();
+            this.FavorTab = new System.Windows.Forms.TabPage();
+            this.CommandStaffTab = new System.Windows.Forms.TabPage();
             this.tabGalaxy = new System.Windows.Forms.TabPage();
+            this.GCMapControlsLabel = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
             this.GalaxyMapPlanetNameBox = new System.Windows.Forms.NumericUpDown();
             this.GCMapControlsButton = new System.Windows.Forms.Button();
@@ -479,6 +487,14 @@
             this.AutoResolveBattleTypeLabel = new System.Windows.Forms.Label();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label37 = new System.Windows.Forms.Label();
+            this.MissionSearchTextBox = new System.Windows.Forms.TextBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.SpawnListSearchTextBox = new System.Windows.Forms.TextBox();
+            this.label39 = new System.Windows.Forms.Label();
+            this.StandardFSearchTextBox = new System.Windows.Forms.TextBox();
+            this.label40 = new System.Windows.Forms.Label();
+            this.RandomFSearchTextBox = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.tabLookups.SuspendLayout();
             this.LookupTabControl.SuspendLayout();
@@ -515,6 +531,8 @@
             this.tabFactions.SuspendLayout();
             this.FactionPanel.SuspendLayout();
             this.MainTab.SuspendLayout();
+            this.tabGov.SuspendLayout();
+            this.GovernmentTabControl.SuspendLayout();
             this.tabGalaxy.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GalaxyMapPlanetNameBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GalaxyMapPlanetBox)).BeginInit();
@@ -542,7 +560,8 @@
             this.backToolStripMenuItem,
             this.forwardToolStripMenuItem,
             this.submodsToolStripMenuItem,
-            this.readErrorsToolStripMenuItem});
+            this.readErrorsToolStripMenuItem,
+            this.crcCalculatorToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1495, 24);
@@ -576,6 +595,13 @@
             this.readErrorsToolStripMenuItem.Size = new System.Drawing.Size(87, 20);
             this.readErrorsToolStripMenuItem.Text = "Read Errors...";
             this.readErrorsToolStripMenuItem.Click += new System.EventHandler(this.readErrorsToolStripMenuItem_Click);
+            // 
+            // crcCalculatorToolStripMenuItem
+            // 
+            this.crcCalculatorToolStripMenuItem.Name = "crcCalculatorToolStripMenuItem";
+            this.crcCalculatorToolStripMenuItem.Size = new System.Drawing.Size(108, 20);
+            this.crcCalculatorToolStripMenuItem.Text = "CRC Calculator...";
+            this.crcCalculatorToolStripMenuItem.Click += new System.EventHandler(this.crcCalculatorToolStripMenuItem_Click);
             // 
             // tabLookups
             // 
@@ -652,34 +678,34 @@
             this.MatrixGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.MatrixGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.MatrixGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.MatrixGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.MatrixGrid.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.MatrixGrid.DefaultCellStyle = dataGridViewCellStyle11;
             this.MatrixGrid.Location = new System.Drawing.Point(3, 24);
             this.MatrixGrid.Name = "MatrixGrid";
             this.MatrixGrid.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.MatrixGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.MatrixGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
             this.MatrixGrid.Size = new System.Drawing.Size(1470, 722);
             this.MatrixGrid.TabIndex = 1;
             // 
@@ -927,6 +953,8 @@
             // 
             // NameFileTab
             // 
+            this.NameFileTab.Controls.Add(this.label3);
+            this.NameFileTab.Controls.Add(this.NameSearchTextBox);
             this.NameFileTab.Controls.Add(this.NameText);
             this.NameFileTab.Controls.Add(this.NameListBox);
             this.NameFileTab.Location = new System.Drawing.Point(4, 22);
@@ -935,6 +963,25 @@
             this.NameFileTab.TabIndex = 10;
             this.NameFileTab.Text = "Name Files";
             this.NameFileTab.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(4, 10);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(64, 20);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Search:";
+            // 
+            // NameSearchTextBox
+            // 
+            this.NameSearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NameSearchTextBox.Location = new System.Drawing.Point(74, 7);
+            this.NameSearchTextBox.Name = "NameSearchTextBox";
+            this.NameSearchTextBox.Size = new System.Drawing.Size(222, 26);
+            this.NameSearchTextBox.TabIndex = 4;
+            this.NameSearchTextBox.TextChanged += new System.EventHandler(this.NameSearchTextBox_TextChanged);
             // 
             // NameText
             // 
@@ -952,14 +999,16 @@
             this.NameListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.NameListBox.FormattingEnabled = true;
-            this.NameListBox.Location = new System.Drawing.Point(6, 7);
+            this.NameListBox.Location = new System.Drawing.Point(6, 46);
             this.NameListBox.Name = "NameListBox";
-            this.NameListBox.Size = new System.Drawing.Size(290, 732);
+            this.NameListBox.Size = new System.Drawing.Size(290, 693);
             this.NameListBox.TabIndex = 2;
             this.NameListBox.SelectedIndexChanged += new System.EventHandler(this.NameListBox_SelectedIndexChanged);
             // 
             // MissionTab
             // 
+            this.MissionTab.Controls.Add(this.label37);
+            this.MissionTab.Controls.Add(this.MissionSearchTextBox);
             this.MissionTab.Controls.Add(this.MissionText);
             this.MissionTab.Controls.Add(this.MissionListBox);
             this.MissionTab.Location = new System.Drawing.Point(4, 22);
@@ -986,14 +1035,16 @@
             this.MissionListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.MissionListBox.FormattingEnabled = true;
-            this.MissionListBox.Location = new System.Drawing.Point(6, 6);
+            this.MissionListBox.Location = new System.Drawing.Point(6, 45);
             this.MissionListBox.Name = "MissionListBox";
-            this.MissionListBox.Size = new System.Drawing.Size(290, 732);
+            this.MissionListBox.Size = new System.Drawing.Size(290, 693);
             this.MissionListBox.TabIndex = 0;
             this.MissionListBox.SelectedIndexChanged += new System.EventHandler(this.MissionListBox_SelectedIndexChanged);
             // 
             // SpawnTab
             // 
+            this.SpawnTab.Controls.Add(this.label38);
+            this.SpawnTab.Controls.Add(this.SpawnListSearchTextBox);
             this.SpawnTab.Controls.Add(this.label22);
             this.SpawnTab.Controls.Add(this.label21);
             this.SpawnTab.Controls.Add(this.SpawnGoTo);
@@ -1062,9 +1113,9 @@
             this.SpawnListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.SpawnListBox.FormattingEnabled = true;
-            this.SpawnListBox.Location = new System.Drawing.Point(6, 7);
+            this.SpawnListBox.Location = new System.Drawing.Point(6, 46);
             this.SpawnListBox.Name = "SpawnListBox";
-            this.SpawnListBox.Size = new System.Drawing.Size(290, 732);
+            this.SpawnListBox.Size = new System.Drawing.Size(290, 693);
             this.SpawnListBox.TabIndex = 2;
             this.SpawnListBox.SelectedIndexChanged += new System.EventHandler(this.SpawnListBox_SelectedIndexChanged);
             // 
@@ -1088,6 +1139,8 @@
             // 
             // StandardFTab
             // 
+            this.StandardFTab.Controls.Add(this.label39);
+            this.StandardFTab.Controls.Add(this.StandardFSearchTextBox);
             this.StandardFTab.Controls.Add(this.StandardFText);
             this.StandardFTab.Controls.Add(this.StandardFListBox);
             this.StandardFTab.Location = new System.Drawing.Point(4, 22);
@@ -1113,14 +1166,16 @@
             this.StandardFListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.StandardFListBox.FormattingEnabled = true;
-            this.StandardFListBox.Location = new System.Drawing.Point(6, 7);
+            this.StandardFListBox.Location = new System.Drawing.Point(6, 46);
             this.StandardFListBox.Name = "StandardFListBox";
-            this.StandardFListBox.Size = new System.Drawing.Size(290, 732);
+            this.StandardFListBox.Size = new System.Drawing.Size(290, 693);
             this.StandardFListBox.TabIndex = 2;
             this.StandardFListBox.SelectedIndexChanged += new System.EventHandler(this.StandardFListBox_SelectedIndexChanged);
             // 
             // RandomFTab
             // 
+            this.RandomFTab.Controls.Add(this.label40);
+            this.RandomFTab.Controls.Add(this.RandomFSearchTextBox);
             this.RandomFTab.Controls.Add(this.RandomFText);
             this.RandomFTab.Controls.Add(this.RandomFListBox);
             this.RandomFTab.Location = new System.Drawing.Point(4, 22);
@@ -1146,9 +1201,9 @@
             this.RandomFListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.RandomFListBox.FormattingEnabled = true;
-            this.RandomFListBox.Location = new System.Drawing.Point(6, 7);
+            this.RandomFListBox.Location = new System.Drawing.Point(6, 46);
             this.RandomFListBox.Name = "RandomFListBox";
-            this.RandomFListBox.Size = new System.Drawing.Size(290, 732);
+            this.RandomFListBox.Size = new System.Drawing.Size(290, 693);
             this.RandomFListBox.TabIndex = 2;
             this.RandomFListBox.SelectedIndexChanged += new System.EventHandler(this.RandomFListBox_SelectedIndexChanged);
             // 
@@ -3943,6 +3998,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GCPanel.AutoScroll = true;
+            this.GCPanel.Controls.Add(this.GCgotoMapButton);
             this.GCPanel.Controls.Add(this.GCMapSortByLabel);
             this.GCPanel.Controls.Add(this.GCMapSortNameRB);
             this.GCPanel.Controls.Add(this.GCMapSortNearestRB);
@@ -3991,6 +4047,17 @@
             this.GCPanel.Name = "GCPanel";
             this.GCPanel.Size = new System.Drawing.Size(1081, 769);
             this.GCPanel.TabIndex = 64;
+            // 
+            // GCgotoMapButton
+            // 
+            this.GCgotoMapButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GCgotoMapButton.Location = new System.Drawing.Point(243, 512);
+            this.GCgotoMapButton.Name = "GCgotoMapButton";
+            this.GCgotoMapButton.Size = new System.Drawing.Size(151, 32);
+            this.GCgotoMapButton.TabIndex = 111;
+            this.GCgotoMapButton.Text = "Go to Galaxy Map";
+            this.GCgotoMapButton.UseVisualStyleBackColor = true;
+            this.GCgotoMapButton.Click += new System.EventHandler(this.GCgotoMapButton_Click);
             // 
             // GCMapSortByLabel
             // 
@@ -4993,6 +5060,7 @@
             // 
             // tabGov
             // 
+            this.tabGov.Controls.Add(this.GovernmentTabControl);
             this.tabGov.Location = new System.Drawing.Point(4, 22);
             this.tabGov.Name = "tabGov";
             this.tabGov.Size = new System.Drawing.Size(1487, 781);
@@ -5000,8 +5068,42 @@
             this.tabGov.Text = "Government";
             this.tabGov.UseVisualStyleBackColor = true;
             // 
+            // GovernmentTabControl
+            // 
+            this.GovernmentTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GovernmentTabControl.Controls.Add(this.FavorTab);
+            this.GovernmentTabControl.Controls.Add(this.CommandStaffTab);
+            this.GovernmentTabControl.Location = new System.Drawing.Point(3, 3);
+            this.GovernmentTabControl.Name = "GovernmentTabControl";
+            this.GovernmentTabControl.SelectedIndex = 0;
+            this.GovernmentTabControl.Size = new System.Drawing.Size(1481, 782);
+            this.GovernmentTabControl.TabIndex = 0;
+            // 
+            // FavorTab
+            // 
+            this.FavorTab.Location = new System.Drawing.Point(4, 22);
+            this.FavorTab.Name = "FavorTab";
+            this.FavorTab.Padding = new System.Windows.Forms.Padding(3);
+            this.FavorTab.Size = new System.Drawing.Size(1473, 756);
+            this.FavorTab.TabIndex = 0;
+            this.FavorTab.Text = "Favor";
+            this.FavorTab.UseVisualStyleBackColor = true;
+            // 
+            // CommandStaffTab
+            // 
+            this.CommandStaffTab.Location = new System.Drawing.Point(4, 22);
+            this.CommandStaffTab.Name = "CommandStaffTab";
+            this.CommandStaffTab.Padding = new System.Windows.Forms.Padding(3);
+            this.CommandStaffTab.Size = new System.Drawing.Size(1473, 756);
+            this.CommandStaffTab.TabIndex = 1;
+            this.CommandStaffTab.Text = "Command Staff";
+            this.CommandStaffTab.UseVisualStyleBackColor = true;
+            // 
             // tabGalaxy
             // 
+            this.tabGalaxy.Controls.Add(this.GCMapControlsLabel);
             this.tabGalaxy.Controls.Add(this.label36);
             this.tabGalaxy.Controls.Add(this.GalaxyMapPlanetNameBox);
             this.tabGalaxy.Controls.Add(this.GCMapControlsButton);
@@ -5041,10 +5143,21 @@
             this.tabGalaxy.Text = "Galaxy Map";
             this.tabGalaxy.UseVisualStyleBackColor = true;
             // 
+            // GCMapControlsLabel
+            // 
+            this.GCMapControlsLabel.AutoSize = true;
+            this.GCMapControlsLabel.BackColor = System.Drawing.Color.Transparent;
+            this.GCMapControlsLabel.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.GCMapControlsLabel.Location = new System.Drawing.Point(3, 55);
+            this.GCMapControlsLabel.Name = "GCMapControlsLabel";
+            this.GCMapControlsLabel.Size = new System.Drawing.Size(159, 234);
+            this.GCMapControlsLabel.TabIndex = 84;
+            this.GCMapControlsLabel.Text = resources.GetString("GCMapControlsLabel.Text");
+            // 
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(372, 29);
+            this.label36.Location = new System.Drawing.Point(310, 29);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(16, 13);
             this.label36.TabIndex = 83;
@@ -5052,7 +5165,7 @@
             // 
             // GalaxyMapPlanetNameBox
             // 
-            this.GalaxyMapPlanetNameBox.Location = new System.Drawing.Point(332, 27);
+            this.GalaxyMapPlanetNameBox.Location = new System.Drawing.Point(270, 27);
             this.GalaxyMapPlanetNameBox.Name = "GalaxyMapPlanetNameBox";
             this.GalaxyMapPlanetNameBox.Size = new System.Drawing.Size(40, 20);
             this.GalaxyMapPlanetNameBox.TabIndex = 82;
@@ -5066,11 +5179,11 @@
             // 
             // GCMapControlsButton
             // 
-            this.GCMapControlsButton.Location = new System.Drawing.Point(271, 2);
+            this.GCMapControlsButton.Location = new System.Drawing.Point(3, 26);
             this.GCMapControlsButton.Name = "GCMapControlsButton";
-            this.GCMapControlsButton.Size = new System.Drawing.Size(64, 23);
+            this.GCMapControlsButton.Size = new System.Drawing.Size(28, 23);
             this.GCMapControlsButton.TabIndex = 81;
-            this.GCMapControlsButton.Text = "Controls...";
+            this.GCMapControlsButton.Text = "...";
             this.GCMapControlsButton.UseVisualStyleBackColor = true;
             this.GCMapControlsButton.Click += new System.EventHandler(this.GCMapControlsButton_Click);
             // 
@@ -5115,6 +5228,7 @@
             this.GalaxyFilterButton.Size = new System.Drawing.Size(96, 23);
             this.GalaxyFilterButton.TabIndex = 75;
             this.GalaxyFilterButton.Text = "Filter Settings...";
+            this.toolTip1.SetToolTip(this.GalaxyFilterButton, "Filter planets. Settings are shared with the planet tab");
             this.GalaxyFilterButton.UseVisualStyleBackColor = true;
             this.GalaxyFilterButton.Click += new System.EventHandler(this.GalaxyFilterButton_Click);
             // 
@@ -5143,7 +5257,7 @@
             // PlanetSizeLabel
             // 
             this.PlanetSizeLabel.AutoSize = true;
-            this.PlanetSizeLabel.Location = new System.Drawing.Point(394, 31);
+            this.PlanetSizeLabel.Location = new System.Drawing.Point(332, 31);
             this.PlanetSizeLabel.Name = "PlanetSizeLabel";
             this.PlanetSizeLabel.Size = new System.Drawing.Size(63, 13);
             this.PlanetSizeLabel.TabIndex = 72;
@@ -5151,7 +5265,7 @@
             // 
             // GalaxyMapPlanetBox
             // 
-            this.GalaxyMapPlanetBox.Location = new System.Drawing.Point(458, 29);
+            this.GalaxyMapPlanetBox.Location = new System.Drawing.Point(396, 29);
             this.GalaxyMapPlanetBox.Name = "GalaxyMapPlanetBox";
             this.GalaxyMapPlanetBox.Size = new System.Drawing.Size(40, 20);
             this.GalaxyMapPlanetBox.TabIndex = 71;
@@ -5362,16 +5476,16 @@
             0,
             0,
             0});
-            this.GalaxyMapEraBox.ValueChanged += new System.EventHandler(this.DrawMapHook);
+            this.GalaxyMapEraBox.ValueChanged += new System.EventHandler(this.GalaxyMapEraBox_ValueChanged);
             // 
             // GalaxyMapFilterCheckbox
             // 
             this.GalaxyMapFilterCheckbox.AutoSize = true;
-            this.GalaxyMapFilterCheckbox.Location = new System.Drawing.Point(3, 28);
+            this.GalaxyMapFilterCheckbox.Location = new System.Drawing.Point(34, 31);
             this.GalaxyMapFilterCheckbox.Name = "GalaxyMapFilterCheckbox";
-            this.GalaxyMapFilterCheckbox.Size = new System.Drawing.Size(103, 17);
+            this.GalaxyMapFilterCheckbox.Size = new System.Drawing.Size(65, 17);
             this.GalaxyMapFilterCheckbox.TabIndex = 4;
-            this.GalaxyMapFilterCheckbox.Text = "Planet Tab Filter";
+            this.GalaxyMapFilterCheckbox.Text = "Filter On";
             this.toolTip1.SetToolTip(this.GalaxyMapFilterCheckbox, "Disable Planet filtering without clearing filter settings");
             this.GalaxyMapFilterCheckbox.UseVisualStyleBackColor = true;
             this.GalaxyMapFilterCheckbox.CheckedChanged += new System.EventHandler(this.DrawMapHook);
@@ -5447,7 +5561,7 @@
             this.PlanetNameCheckBox.AutoSize = true;
             this.PlanetNameCheckBox.Checked = true;
             this.PlanetNameCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.PlanetNameCheckBox.Location = new System.Drawing.Point(273, 28);
+            this.PlanetNameCheckBox.Location = new System.Drawing.Point(271, 7);
             this.PlanetNameCheckBox.Name = "PlanetNameCheckBox";
             this.PlanetNameCheckBox.Size = new System.Drawing.Size(59, 17);
             this.PlanetNameCheckBox.TabIndex = 80;
@@ -5828,6 +5942,82 @@
             this.toolTip1.InitialDelay = 500;
             this.toolTip1.ReshowDelay = 100;
             // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label37.Location = new System.Drawing.Point(4, 9);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(64, 20);
+            this.label37.TabIndex = 7;
+            this.label37.Text = "Search:";
+            // 
+            // MissionSearchTextBox
+            // 
+            this.MissionSearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MissionSearchTextBox.Location = new System.Drawing.Point(74, 6);
+            this.MissionSearchTextBox.Name = "MissionSearchTextBox";
+            this.MissionSearchTextBox.Size = new System.Drawing.Size(222, 26);
+            this.MissionSearchTextBox.TabIndex = 6;
+            this.MissionSearchTextBox.TextChanged += new System.EventHandler(this.MissionSearchTextBox_TextChanged);
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label38.Location = new System.Drawing.Point(4, 10);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(64, 20);
+            this.label38.TabIndex = 97;
+            this.label38.Text = "Search:";
+            // 
+            // SpawnListSearchTextBox
+            // 
+            this.SpawnListSearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SpawnListSearchTextBox.Location = new System.Drawing.Point(74, 7);
+            this.SpawnListSearchTextBox.Name = "SpawnListSearchTextBox";
+            this.SpawnListSearchTextBox.Size = new System.Drawing.Size(222, 26);
+            this.SpawnListSearchTextBox.TabIndex = 96;
+            this.SpawnListSearchTextBox.TextChanged += new System.EventHandler(this.SpawnListSearchTextBox_TextChanged);
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label39.Location = new System.Drawing.Point(4, 10);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(64, 20);
+            this.label39.TabIndex = 7;
+            this.label39.Text = "Search:";
+            // 
+            // StandardFSearchTextBox
+            // 
+            this.StandardFSearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StandardFSearchTextBox.Location = new System.Drawing.Point(74, 7);
+            this.StandardFSearchTextBox.Name = "StandardFSearchTextBox";
+            this.StandardFSearchTextBox.Size = new System.Drawing.Size(222, 26);
+            this.StandardFSearchTextBox.TabIndex = 6;
+            this.StandardFSearchTextBox.TextChanged += new System.EventHandler(this.StandardFSearchTextBox_TextChanged);
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label40.Location = new System.Drawing.Point(4, 10);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(64, 20);
+            this.label40.TabIndex = 7;
+            this.label40.Text = "Search:";
+            // 
+            // RandomFSearchTextBox
+            // 
+            this.RandomFSearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RandomFSearchTextBox.Location = new System.Drawing.Point(74, 7);
+            this.RandomFSearchTextBox.Name = "RandomFSearchTextBox";
+            this.RandomFSearchTextBox.Size = new System.Drawing.Size(222, 26);
+            this.RandomFSearchTextBox.TabIndex = 6;
+            this.RandomFSearchTextBox.TextChanged += new System.EventHandler(this.RandomFSearchTextBox_TextChanged);
+            // 
             // Holocron
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5839,7 +6029,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Holocron";
-            this.Text = "EaWX Holocron v0.4c";
+            this.Text = "EaWX Holocron v0.4d";
             this.Load += new System.EventHandler(this.Holocron_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -5853,11 +6043,15 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.NameFileTab.ResumeLayout(false);
+            this.NameFileTab.PerformLayout();
             this.MissionTab.ResumeLayout(false);
+            this.MissionTab.PerformLayout();
             this.SpawnTab.ResumeLayout(false);
             this.SpawnTab.PerformLayout();
             this.StandardFTab.ResumeLayout(false);
+            this.StandardFTab.PerformLayout();
             this.RandomFTab.ResumeLayout(false);
+            this.RandomFTab.PerformLayout();
             this.tabUnits.ResumeLayout(false);
             this.tabUnits.PerformLayout();
             this.Unitpanel.ResumeLayout(false);
@@ -5893,6 +6087,8 @@
             this.FactionPanel.ResumeLayout(false);
             this.FactionPanel.PerformLayout();
             this.MainTab.ResumeLayout(false);
+            this.tabGov.ResumeLayout(false);
+            this.GovernmentTabControl.ResumeLayout(false);
             this.tabGalaxy.ResumeLayout(false);
             this.tabGalaxy.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GalaxyMapPlanetNameBox)).EndInit();
@@ -6362,6 +6558,22 @@
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.NumericUpDown GalaxyMapPlanetNameBox;
         private System.Windows.Forms.Button ErrorCheckButton;
+        private System.Windows.Forms.ToolStripMenuItem crcCalculatorToolStripMenuItem;
+        private System.Windows.Forms.Label GCMapControlsLabel;
+        private System.Windows.Forms.Button GCgotoMapButton;
+        private System.Windows.Forms.TabControl GovernmentTabControl;
+        private System.Windows.Forms.TabPage FavorTab;
+        private System.Windows.Forms.TabPage CommandStaffTab;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox NameSearchTextBox;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.TextBox MissionSearchTextBox;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.TextBox SpawnListSearchTextBox;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.TextBox StandardFSearchTextBox;
+        private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.TextBox RandomFSearchTextBox;
     }
 }
 

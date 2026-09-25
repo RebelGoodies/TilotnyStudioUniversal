@@ -93,6 +93,7 @@
             this.FoWCheckBox = new System.Windows.Forms.CheckBox();
             this.SpeedCheckBox = new System.Windows.Forms.CheckBox();
             this.DefCheckBox = new System.Windows.Forms.CheckBox();
+            this.crcRB = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // NameRB
@@ -825,11 +826,23 @@
             this.DefCheckBox.Text = "Defense";
             this.DefCheckBox.UseVisualStyleBackColor = true;
             // 
+            // crcRB
+            // 
+            this.crcRB.AutoSize = true;
+            this.crcRB.Location = new System.Drawing.Point(15, 316);
+            this.crcRB.Name = "crcRB";
+            this.crcRB.Size = new System.Drawing.Size(47, 17);
+            this.crcRB.TabIndex = 72;
+            this.crcRB.TabStop = true;
+            this.crcRB.Text = "CRC";
+            this.crcRB.UseVisualStyleBackColor = true;
+            // 
             // UnitSort
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(767, 408);
+            this.Controls.Add(this.crcRB);
             this.Controls.Add(this.FoWCheckBox);
             this.Controls.Add(this.SpeedCheckBox);
             this.Controls.Add(this.DefCheckBox);
@@ -969,5 +982,6 @@
         private System.Windows.Forms.CheckBox FoWCheckBox;
         private System.Windows.Forms.CheckBox SpeedCheckBox;
         private System.Windows.Forms.CheckBox DefCheckBox;
+        private System.Windows.Forms.RadioButton crcRB;
     }
 }

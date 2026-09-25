@@ -2044,7 +2044,7 @@ public static class SharedFunctions
         doc.PreserveWhitespace = true;
         if (path == "")
         {
-            MessageBox.Show("Meg data not found. Data may be missing");
+            MessageBox.Show("Meg data not found. Data may be missing.\n\nNote: submods cannot be loaded without using the Data Files menu to specify main mod data location");
             return;
         }
         doc.Load(path);
@@ -6128,7 +6128,187 @@ public static class SharedFunctions
         return corenne;
     }
 
-}
+    public static bool[,] saveIcon(string iconSource, Image image, bool[,] MTDArray, entities entities, string localmod)
+    {
+        //When setting up ports, use thusly
+        //g.DrawImage(entities.MTmaster, new Rectangle(0, 0, icondata.size_x, icondata.size_y), new Rectangle(icondata.origin_x, icondata.origin_y, icondata.size_x, icondata.size_y), GraphicsUnit.Pixel);
+
+        IconData ico = DatParser.GetIconData(iconSource, entities);
+        bool replace = false;
+        bool inplace_replace = false;
+        if (!(ico.id is null)) replace = true;
+
+        //are these are 1 or 0 indexed
+        bool found = false;
+        int finalx = 0;
+        int y = 0;
+        if (replace && image.Width == ico.size_x && image.Height == ico.size_y)
+        {
+            found = true;
+            inplace_replace = true;
+            finalx = ico.origin_x;
+            y = ico.origin_y;
+        }
+        else
+        {
+            for (; y < MTDArray.GetLength(1) - image.Height; y++)
+            {
+                for (int x = 0; x < MTDArray.GetLength(0) - image.Width; x++)
+                {
+                    bool spotbad = false;
+                    if (MTDArray[x, y] == false)
+                    {
+                        found = true;
+                        for (int cy = y; cy < y + image.Height; cy++)
+                        {
+                            for (int cx = x; cx < x + image.Width; cx++)
+                            {
+                                if (MTDArray[cx, cy])
+                                {
+                                    x = cx; //can jump ahead since all examinations before the last cx will fail, but not in y due to the x preferential search algorithm
+                                    spotbad = true;
+                                    found = false;
+                                    break;
+                                }
+                            }
+                            if (spotbad) break; //break out of outer check loop if failed
+                        }
+                    }
+                    if (found)
+                    {
+                        finalx = x;
+                        break; //stop iterating when found
+                    }
+                }
+                if (found) break;
+            }
+        }
+        
+        if (!found)
+        {
+            MessageBox.Show("No room for icon found in MT_Commandbar. Rearrage or make larger in another program.");
+            return new bool[0,0];
+        }
+
+        if (!inplace_replace)
+        {
+            for (int fx = finalx; fx < finalx + image.Width; fx++)
+            {
+                for (int fy = y; fy < y + image.Height; fy++)
+                {
+                    MTDArray[fx, fy] = true;
+                }
+            }
+        }
+        //Todo best practice would be to clear the relevant MTDarray area. But that is rebuilt on restart anyway
+        Graphics g = Graphics.FromImage(entities.MTmaster);
+        if (replace) g.FillRectangle(new SolidBrush(Color.Black), ico.origin_x, ico.origin_y, ico.size_x, ico.size_y);
+        g.DrawImage(image, new Rectangle(finalx, y, image.Width, image.Height));
+        System.IO.Directory.CreateDirectory(localmod + "\\Art\\Textures");
+        try
+        {
+            entities.MTmaster.Save(localmod + "\\Art\\Textures\\MT_CommandBar.tga", System.Drawing.Imaging.ImageFormat.Bmp);
+        }
+        catch
+        {
+            MessageBox.Show("Error writing to MT_CommandBar.tga. Is another program using it?");
+            return new bool[0, 0];
+        }
+        
+        ico.id = iconSource.ToUpper();
+        ico.origin_x = finalx;
+        ico.origin_y = y;
+        ico.size_x = image.Width;
+        ico.size_y = image.Height;
+        byte[] oldmtdfile = System.IO.File.ReadAllBytes(getModFile("Art\\Textures\\MT_CommandBar.mtd", entities));
+        if (replace)
+        {
+            if (inplace_replace)
+            {
+                for (int icid = 0; icid < entities.IconData.Count; icid++)
+                {
+                    if (entities.IconData[icid].id.ToUpper() == ico.id)
+                    {
+                        int replaceid = 4 + 81 * icid + 64;
+                        byte[] byt = DatParser.tobytesLE((uint)entities.IconData.Count);
+                        byt = DatParser.tobytesLE((uint)ico.origin_x);
+                        for (int i = 0; i < 4; i++)
+                        {
+                            oldmtdfile[replaceid + i] = byt[i];
+                        }
+                        replaceid += 4;
+                        byt = DatParser.tobytesLE((uint)ico.origin_y);
+                        for (int i = 0; i < 4; i++)
+                        {
+                            oldmtdfile[replaceid + i] = byt[i];
+                        }
+                        replaceid += 4;
+                        byt = DatParser.tobytesLE((uint)ico.size_x);
+                        for (int i = 0; i < 4; i++)
+                        {
+                            oldmtdfile[replaceid + i] = byt[i];
+                        }
+                        replaceid += 4;
+                        byt = DatParser.tobytesLE((uint)ico.size_y);
+                        for (int i = 0; i < 4; i++)
+                        {
+                            oldmtdfile[replaceid + i] = byt[i];
+                        }
+                        break;
+                    }
+                }
+            }
+            return MTDArray;
+        }
+
+        entities.IconData.Add(ico);
+        entities.IconData.Sort((s1, s2) => s1.id.CompareTo(s2.id));
+
+        byte[] newmtdfile = new byte[oldmtdfile.Length + 81];
+        //Array.Copy(oldmtdfile, 4, newmtdfile, 4, oldmtdfile.Length - 4); //Todo: rebuild MTD from scratch so new icons are alphabetized within it
+        byte[] bytes = DatParser.tobytesLE((uint)entities.IconData.Count);
+        for (int i = 0; i < 4; i++)
+        {
+            newmtdfile[i] = bytes[i];
+        }
+        int mtindex = 4;
+        for (int ic = 0; ic < entities.IconData.Count; ic++)
+        {
+            Array.Copy(Encoding.UTF8.GetBytes(entities.IconData[ic].id), 0, newmtdfile, mtindex, entities.IconData[ic].id.Length); //May explicitly need ASCII support instead of trying to extend more
+            mtindex += 64;
+            bytes = DatParser.tobytesLE((uint)entities.IconData[ic].origin_x);
+            for (int i = 0; i < 4; i++)
+            {
+                newmtdfile[mtindex + i] = bytes[i];
+            }
+            mtindex += 4;
+            bytes = DatParser.tobytesLE((uint)entities.IconData[ic].origin_y);
+            for (int i = 0; i < 4; i++)
+            {
+                newmtdfile[mtindex + i] = bytes[i];
+            }
+            mtindex += 4;
+            bytes = DatParser.tobytesLE((uint)entities.IconData[ic].size_x);
+            for (int i = 0; i < 4; i++)
+            {
+                newmtdfile[mtindex + i] = bytes[i];
+            }
+            mtindex += 4;
+            bytes = DatParser.tobytesLE((uint)entities.IconData[ic].size_y);
+            for (int i = 0; i < 4; i++)
+            {
+                newmtdfile[mtindex + i] = bytes[i];
+            }
+            mtindex += 4;
+            newmtdfile[mtindex] = 1;
+            mtindex++;
+        }
+        File.WriteAllBytes(localmod + "\\Art\\Textures\\MT_CommandBar.mtd", newmtdfile);
+
+        return MTDArray;
+    }
+
+} //End of function
 
 public struct MEGentry
 {
@@ -6806,7 +6986,7 @@ class Key_Pair : IComparable<Key_Pair>
 
 public static class DatParser
 {
-    static byte[] tobytesLE(uint value)
+    public static byte[] tobytesLE(uint value)
     {
         byte[] corenne = new byte[4];
         corenne[0] = Convert.ToByte(value & 0xff);
@@ -6870,7 +7050,7 @@ public static class DatParser
 
         int total_entries = make32(mtdfile, 0);
         for (int index = 4; index < total_entries*81+4; index+=5) //cover last 32 bit and 8 bit alpha boolean
-        {
+        {//Todo compare charge with and without offset, check rev icons
             IconData ico = new IconData();
             for(int i = index; i<index+64; i++)
             {
@@ -6878,7 +7058,7 @@ public static class DatParser
                 ico.id += (char)mtdfile[i];
             }
             index += 64;
-            ico.origin_x = make32(mtdfile, index);
+            ico.origin_x = make32(mtdfile, index); //appears to be 1 indexed?
             index += 4;
             ico.origin_y = make32(mtdfile, index);
             index += 4;

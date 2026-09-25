@@ -58,6 +58,7 @@ namespace Holocron
             incomePercent,
             incomeAmount,
             CommandBonus,
+            crc,
         }
 
         public struct UnitSortClass
@@ -270,6 +271,9 @@ namespace Holocron
                 case UnitSortTypes.CommandBonus:
                     CommandBonusRB.Checked = true;
                     break;
+                case UnitSortTypes.crc:
+                    crcRB.Checked = true;
+                    break;
                 default:
                     break;
             }
@@ -357,6 +361,7 @@ namespace Holocron
             else if (IncomePercentRB.Checked) sortConfig.SortType = UnitSortTypes.incomePercent;
             else if (IncomeAmountRB.Checked) sortConfig.SortType = UnitSortTypes.incomeAmount;
             else if (CommandBonusRB.Checked) sortConfig.SortType = UnitSortTypes.CommandBonus;
+            else if (crcRB.Checked) sortConfig.SortType = UnitSortTypes.crc;
 
 
             sortConfig.complementCP = ComplementCheckBox.Checked;
@@ -365,7 +370,7 @@ namespace Holocron
             if(sortConfig.SortType >= UnitSortTypes.Durability && sortConfig.SortType <= UnitSortTypes.Regen) sortDocumentation += " " + DurabilityBox.Text;
             sortConfig.fighterBomberMode = FighterTypeBox.SelectedIndex;
             sortConfig.upfrontReserveMode = ReserveBox.SelectedIndex;
-            if (sortConfig.SortType >= UnitSortTypes.Complement) sortDocumentation += " " + FighterTypeBox.Text + "/" + ReserveBox.Text;
+            if (sortConfig.SortType == UnitSortTypes.Complement) sortDocumentation += " " + FighterTypeBox.Text + "/" + ReserveBox.Text;
             sortConfig.Accuracy = AccuracyCheckBox.Checked;
             if (sortConfig.SortType >= UnitSortTypes.dpsAvg && sortConfig.SortType <= UnitSortTypes.dpsShield && sortConfig.Accuracy) sortDocumentation += " (including Accuracy)";
             sortConfig.HealMode = HealBox.SelectedIndex;

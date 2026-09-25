@@ -37,14 +37,18 @@ namespace TilotnyStudio
             this.AddIconButton = new System.Windows.Forms.Button();
             this.AcceptButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
+            this.SelectedIconLabel = new System.Windows.Forms.Label();
+            this.UsedMapPictureBox = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.IconPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.UsedMapPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // IconPictureBox
             // 
-            this.IconPictureBox.Location = new System.Drawing.Point(704, 27);
+            this.IconPictureBox.Location = new System.Drawing.Point(673, 27);
             this.IconPictureBox.Name = "IconPictureBox";
-            this.IconPictureBox.Size = new System.Drawing.Size(75, 75);
+            this.IconPictureBox.Size = new System.Drawing.Size(179, 172);
             this.IconPictureBox.TabIndex = 11;
             this.IconPictureBox.TabStop = false;
             // 
@@ -87,12 +91,13 @@ namespace TilotnyStudio
             this.AddIconButton.TabIndex = 55;
             this.AddIconButton.Text = "Add Icon...";
             this.AddIconButton.UseVisualStyleBackColor = true;
+            this.AddIconButton.Click += new System.EventHandler(this.AddIconButton_Click);
             // 
             // AcceptButton
             // 
             this.AcceptButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.AcceptButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AcceptButton.Location = new System.Drawing.Point(673, 414);
+            this.AcceptButton.Location = new System.Drawing.Point(737, 430);
             this.AcceptButton.Name = "AcceptButton";
             this.AcceptButton.Size = new System.Drawing.Size(115, 31);
             this.AcceptButton.TabIndex = 56;
@@ -104,7 +109,7 @@ namespace TilotnyStudio
             // 
             this.CancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CancelButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CancelButton.Location = new System.Drawing.Point(552, 414);
+            this.CancelButton.Location = new System.Drawing.Point(616, 430);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(115, 31);
             this.CancelButton.TabIndex = 57;
@@ -112,11 +117,46 @@ namespace TilotnyStudio
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
+            // SelectedIconLabel
+            // 
+            this.SelectedIconLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.SelectedIconLabel.AutoSize = true;
+            this.SelectedIconLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SelectedIconLabel.Location = new System.Drawing.Point(283, 392);
+            this.SelectedIconLabel.Name = "SelectedIconLabel";
+            this.SelectedIconLabel.Size = new System.Drawing.Size(76, 20);
+            this.SelectedIconLabel.TabIndex = 58;
+            this.SelectedIconLabel.Text = "Selected:";
+            // 
+            // UsedMapPictureBox
+            // 
+            this.UsedMapPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.UsedMapPictureBox.Location = new System.Drawing.Point(274, 120);
+            this.UsedMapPictureBox.Name = "UsedMapPictureBox";
+            this.UsedMapPictureBox.Size = new System.Drawing.Size(393, 269);
+            this.UsedMapPictureBox.TabIndex = 59;
+            this.UsedMapPictureBox.TabStop = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(271, 105);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(160, 13);
+            this.label1.TabIndex = 60;
+            this.label1.Text = "Red areas are allocated to icons";
+            // 
             // IconPickAndAdd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(864, 466);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.UsedMapPictureBox);
+            this.Controls.Add(this.SelectedIconLabel);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.AcceptButton);
             this.Controls.Add(this.AddIconButton);
@@ -129,6 +169,7 @@ namespace TilotnyStudio
             this.Text = "Pick Icon";
             this.Load += new System.EventHandler(this.IconPickAndAdd_Load);
             ((System.ComponentModel.ISupportInitialize)(this.IconPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.UsedMapPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -143,5 +184,8 @@ namespace TilotnyStudio
         private System.Windows.Forms.Button AddIconButton;
         private System.Windows.Forms.Button AcceptButton;
         private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Label SelectedIconLabel;
+        private System.Windows.Forms.PictureBox UsedMapPictureBox;
+        private System.Windows.Forms.Label label1;
     }
 }
