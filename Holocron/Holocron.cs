@@ -188,94 +188,28 @@ namespace Holocron
 
         private void Holocron_Load(object sender, EventArgs e)
         {
-            string[] args = Environment.GetCommandLineArgs();
-            if (args.Length > 1)
+            ModPathResolution resolved = SharedFunctions.ResolveModPaths(
+                AppContext.BaseDirectory, Environment.GetCommandLineArgs(),
+                walkUpLevels: 4, modFolderUpLevels: 1, devChoiceInCommonBranch: true);
+
+            entities.modpaths = resolved.ModPaths;
+            globals.localmodpath = resolved.LocalModPath;
+            globals.steammodpath = resolved.SteamModPath;
+
+            if (resolved.DevChoiceBasePath != null)
             {
-                string[] split = args[1].Split(';');
-                for (int i = 0; i < split.Length; i++) { //First arg is exe, second is semicolon delimited mod args
-                    entities.modpaths.Add(split[i]);
-                }
+                DevChoice devChoice = new DevChoice();
+                devChoice.basepath = resolved.DevChoiceBasePath;
+                devChoice.ShowDialog();
+
+                entities.modpaths = devChoice.args;
+                globals.allplanets = devChoice.allplanet;
+                globals.devmode = true;
             }
-            string exePath = AppContext.BaseDirectory;
-            string localmodtest = UpOneFolder(UpOneFolder(UpOneFolder(UpOneFolder(exePath))));
-            string modfolder = UpOneFolder(exePath);
-            if (File.Exists(localmodtest + "\\StarWarsG.exe"))
+            else if (resolved.Failed)
             {
-                globals.localmodpath = UpOneFolder(UpOneFolder(modfolder));
-                globals.steammodpath = UpOneFolder(UpOneFolder(UpOneFolder(localmodtest))) + "\\workshop\\content\\32470";
-                if (entities.modpaths.Count == 0)
-                {
-                    if (Directory.Exists(modfolder + "\\..\\TR") && Directory.Exists(modfolder + "\\..\\FotR") && Directory.Exists(modfolder + "\\..\\CoreSaga") && Directory.Exists(modfolder + "\\..\\Rev"))
-                    {
-                        DevChoice devChoice = new DevChoice();
-                        devChoice.basepath = UpOneFolder(modfolder);
-                        devChoice.ShowDialog();
-
-                        entities.modpaths = devChoice.args;
-                        globals.allplanets = devChoice.allplanet;
-                        globals.devmode = true;
-                    }
-                    else entities.modpaths.Add(modfolder);
-                }
-            }
-            else
-            {
-                localmodtest = UpOneFolder(UpOneFolder(localmodtest)) + "\\common\\Star Wars Empire at War\\corruption";
-                if (File.Exists(localmodtest + "\\StarWarsG.exe"))
-                {
-                    if (Directory.Exists(modfolder + "\\..\\TR") && Directory.Exists(modfolder + "\\..\\FotR") && Directory.Exists(modfolder + "\\..\\CoreSaga") && Directory.Exists(modfolder + "\\..\\Rev"))
-                    {
-                        DevChoice devChoice = new DevChoice();
-                        devChoice.basepath = UpOneFolder(modfolder);
-                        devChoice.ShowDialog();
-
-                        entities.modpaths = devChoice.args;
-                        globals.allplanets = devChoice.allplanet;
-                        globals.devmode = true;
-                        globals.steammodpath = UpOneFolder(UpOneFolder(modfolder));
-                        globals.localmodpath = localmodtest + "\\Mods";
-                    }
-                    else
-                    {
-                        if (entities.modpaths.Count == 0) entities.modpaths.Add(modfolder);
-                        globals.steammodpath = UpOneFolder(UpOneFolder(modfolder));
-                        globals.localmodpath = localmodtest + "\\Mods";
-                    }
-                }
-                else
-                {//Run on real mod data from the debugger
-                    if (File.Exists("debugpaths.cfg"))
-                    {
-                        string[] lines = File.ReadAllLines("debugpaths.cfg");
-                        globals.localmodpath = lines[0];
-                        globals.steammodpath = lines[1];
-
-                        for (int i = 2; i < lines.Length; i++) entities.modpaths.Add(lines[i]);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Could not locate data files. Please place in the data folder of a Steam Workshop or local mod for Empire at War");
-                        this.Close();
-                    }
-                    //globals.localmodpath = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Star Wars Empire at War\\corruption\\Mods";
-                    //globals.steammodpath = "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\32470";
-                    //1125571106 1976399102 3417277973
-                    //Workshop
-                    // entities.modpaths.Add("C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\32470\\3417277973\\Data");
-
-                    //Dev build
-
-                    //entities.modpaths.Add("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Star Wars Empire at War\\corruption\\Mods\\Imperial_Civil_War\\Rev\\Data");
-                    //entities.modpaths.Add("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Star Wars Empire at War\\corruption\\Mods\\Imperial_Civil_War\\TR\\Data");
-                    //entities.modpaths.Add("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Star Wars Empire at War\\corruption\\Mods\\Imperial_Civil_War\\FotR\\Data");
-                    //entities.modpaths.Add("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Star Wars Empire at War\\corruption\\Mods\\Imperial_Civil_War\\CoreSaga\\Data");
-                    //entities.modpaths.Add("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Star Wars Empire at War\\corruption\\Mods\\Imperial_Civil_War\\Data");
-
-
-                    //Vanillua
-                    //entities.modpaths.Add("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Star Wars Empire at War\\corruption\\Data");
-                    //entities.modpaths.Add("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Star Wars Empire at War\\GameData\\Data");
-                }
+                MessageBox.Show("Could not locate data files. Please place in the data folder of a Steam Workshop or local mod for Empire at War");
+                this.Close();
             }
             load_mods();
             globals.UnitSortConfig.SortType = UnitSortTypes.Name;

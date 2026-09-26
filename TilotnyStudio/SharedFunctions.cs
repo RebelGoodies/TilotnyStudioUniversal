@@ -51,6 +51,116 @@ public static class SharedFunctions
         return Path.Substring(Path.IndexOf("\\") + 1, Path.Length - Path.IndexOf("\\") - 1);
     }
 
+    // Shared mod path resolution order (used by both Holocron and TilotnyStudio)
+
+    public class ModPathResolution
+    {
+        public List<string> ModPaths = new List<string>();
+        public string LocalModPath = "";
+        public string SteamModPath = "";
+        public bool DevMode = false;
+        // Non-null: caller must show the DevChoice dialog rooted here and
+        // assign its args to ModPaths (the dialog is app-specific UI).
+        public string DevChoiceBasePath;
+        public bool CfgImperialCivilWar = false;
+        public bool Failed = false;
+    }
+
+    private static string UpOneFolderN(string path, int levels)
+    {
+        for (int i = 0; i < levels; i++) path = UpOneFolder(path);
+        return path;
+    }
+
+    // Stacked ICW dev layout: sibling TR/FotR/CoreSaga/Rev folders next to the exe's mod folder
+    private static bool IsDevModLayout(string modfolder)
+    {
+        return Directory.Exists(modfolder + "\\..\\TR") && Directory.Exists(modfolder + "\\..\\FotR")
+            && Directory.Exists(modfolder + "\\..\\CoreSaga") && Directory.Exists(modfolder + "\\..\\Rev");
+    }
+
+    private static bool TryReadDebugPathsCfg(out string localModPath, out string steamModPath, List<string> modPaths)
+    {
+        localModPath = "";
+        steamModPath = "";
+        if (!File.Exists("debugpaths.cfg")) return false;
+
+        // Better parsing: trim, skip blank and comment lines so commented-out
+        // paths in the cfg don't shift the positional line meanings.
+        List<string> lines = File.ReadAllLines("debugpaths.cfg")
+            .Select(l => l.Trim())
+            .Where(l => l.Length > 0 && !l.StartsWith("//") && !l.StartsWith("#"))
+            .ToList();
+
+        if (lines.Count < 2) return false;
+
+        localModPath = lines[0];
+        steamModPath = lines[1];
+        for (int i = 2; i < lines.Count; i++) modPaths.Add(lines[i]);
+        return true;
+    }
+
+    /// <param name="exePath">AppContext.BaseDirectory of the running exe</param>
+    /// <param name="args">Environment.GetCommandLineArgs()</param>
+    /// <param name="walkUpLevels">folders to walk up from exePath looking for StarWarsG.exe</param>
+    /// <param name="modFolderUpLevels">folders up from exePath to the containing mod Data folder</param>
+    /// <param name="devChoiceInCommonBranch">Holocron offers DevChoice in the common-install branch too</param>
+    public static ModPathResolution ResolveModPaths(string exePath, string[] args, int walkUpLevels, int modFolderUpLevels, bool devChoiceInCommonBranch)
+    {
+        ModPathResolution result = new ModPathResolution();
+
+        // first arg is the exe, second is semicolon-delimited mod paths
+        if (args != null && args.Length > 1)
+        {
+            string[] split = args[1].Split(';');
+            for (int i = 0; i < split.Length; i++) result.ModPaths.Add(split[i]);
+        }
+
+        string modfolder = UpOneFolderN(exePath, modFolderUpLevels);
+        string localmodtest = UpOneFolderN(exePath, walkUpLevels);
+
+        if (File.Exists(localmodtest + "\\StarWarsG.exe"))
+        {
+            // Workshop-style layout: ...\workshop\content\32470\<modid>\Data
+            result.LocalModPath = UpOneFolder(UpOneFolder(modfolder));
+            result.SteamModPath = UpOneFolder(UpOneFolder(UpOneFolder(localmodtest))) + "\\workshop\\content\\32470";
+            if (result.ModPaths.Count == 0)
+            {
+                if (IsDevModLayout(modfolder)) result.DevChoiceBasePath = UpOneFolder(modfolder);
+                else result.ModPaths.Add(modfolder);
+            }
+            return result;
+        }
+
+        localmodtest = UpOneFolder(UpOneFolder(localmodtest)) + "\\common\\Star Wars Empire at War\\corruption";
+        if (File.Exists(localmodtest + "\\StarWarsG.exe"))
+        {
+            if (devChoiceInCommonBranch && IsDevModLayout(modfolder))
+            {
+                result.DevChoiceBasePath = UpOneFolder(modfolder);
+                result.SteamModPath = UpOneFolder(UpOneFolder(modfolder));
+                result.LocalModPath = localmodtest + "\\Mods";
+            }
+            else
+            {
+                if (result.ModPaths.Count == 0) result.ModPaths.Add(modfolder);
+                result.SteamModPath = UpOneFolder(UpOneFolder(modfolder));
+                result.LocalModPath = localmodtest + "\\Mods";
+            }
+            return result;
+        }
+
+        // debugpaths.cfg fallback (running from the debugger / Tools)
+        if (TryReadDebugPathsCfg(out result.LocalModPath, out result.SteamModPath, result.ModPaths))
+        {
+            if (result.ModPaths.Count > 0 && result.ModPaths[0].Contains("Imperial_Civil_War"))
+                result.CfgImperialCivilWar = true;
+        }
+        else result.Failed = true;
+
+        return result;
+    }
+
     public static byte[] getFileFromMegs(string corePath, entities entities)
     {
         string upper = corePath.ToUpper();

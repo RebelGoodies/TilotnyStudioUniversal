@@ -163,63 +163,29 @@ namespace TilotnyStudio
             //For debugging dev mode
             //exePath = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Star Wars Empire at War\\corruption\\Mods\\Imperial_Civil_War\\Data\\Tilotny\\";
 
-            string[] args = Environment.GetCommandLineArgs();
-            if (args.Length > 1)
-            {
-                string[] split = args[1].Split(';');
-                for (int i = 0; i < split.Length; i++)
-                { //First arg is exe, second is semicolon delimited mod args
-                    globals.modpaths.Add(split[i]);
-                }
-            }
-            string localmodtest = UpOneFolder(UpOneFolder(UpOneFolder(UpOneFolder(UpOneFolder(exePath)))));
-            string modfolder = UpOneFolder(UpOneFolder(exePath));
-            if (File.Exists(localmodtest + "\\StarWarsG.exe"))
-            {
-                globals.localmodpath = UpOneFolder(UpOneFolder(modfolder));
-                globals.steammodpath = UpOneFolder(UpOneFolder(UpOneFolder(localmodtest))) + "\\workshop\\content\\32470";
-                if (globals.modpaths.Count == 0)
-                {
-                    if (Directory.Exists(modfolder + "\\..\\TR") && Directory.Exists(modfolder + "\\..\\FotR") && Directory.Exists(modfolder + "\\..\\CoreSaga") && Directory.Exists(modfolder + "\\..\\Rev"))
-                    {
-                        DevChoice devChoice = new DevChoice();
-                        devChoice.basepath = UpOneFolder(modfolder);
-                        devChoice.ShowDialog();
+            ModPathResolution resolved = SharedFunctions.ResolveModPaths(
+                exePath, Environment.GetCommandLineArgs(),
+                walkUpLevels: 5, modFolderUpLevels: 2, devChoiceInCommonBranch: false);
 
-                        globals.modpaths = devChoice.args;
-                        devModeOn();
-                    }
-                    else globals.modpaths.Add(modfolder);
-                }
-            }
-            else
+            globals.modpaths = resolved.ModPaths;
+            globals.localmodpath = resolved.LocalModPath;
+            globals.steammodpath = resolved.SteamModPath;
+
+            if (resolved.DevChoiceBasePath != null)
             {
-                localmodtest = UpOneFolder(UpOneFolder(localmodtest)) + "\\common\\Star Wars Empire at War\\corruption";
-                if (File.Exists(localmodtest + "\\StarWarsG.exe"))
-                {
-                    if (globals.modpaths.Count == 0) globals.modpaths.Add(modfolder);
-                    globals.steammodpath = UpOneFolder(UpOneFolder(modfolder));
-                    globals.localmodpath = localmodtest + "\\Mods";
-                }
-                else
-                {//Run on real mod data from the debugger
-                    if (File.Exists("debugpaths.cfg"))
-                    {
-                        string[] lines = File.ReadAllLines("debugpaths.cfg");
-                        globals.localmodpath = lines[0];
-                        globals.steammodpath = lines[1];
+                DevChoice devChoice = new DevChoice();
+                devChoice.basepath = resolved.DevChoiceBasePath;
+                devChoice.ShowDialog();
 
-                        for (int i = 2; i < lines.Length; i++) globals.modpaths.Add(lines[i]);
-
-                        if (globals.modpaths[0].Contains("Imperial_Civil_War")) devModeOn();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Could not locate data files. Please place in the data folder of a Steam Workshop or local mod for Empire at War");
-                        this.Close();
-                    }
-                }
+                globals.modpaths = devChoice.args;
+                devModeOn();
             }
+            else if (resolved.Failed)
+            {
+                MessageBox.Show("Could not locate data files. Please place in the data folder of a Steam Workshop or local mod for Empire at War");
+                this.Close();
+            }
+            else if (resolved.CfgImperialCivilWar) devModeOn();
 
             SkirmishListBox.SelectedIndex = 0;
             populateModPage();
