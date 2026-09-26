@@ -31,24 +31,46 @@ using System.Windows.Forms;
 
 public static class SharedFunctions
 {
+    // Separator handling (\\ vs /), root paths, and empty input are handled by the BCL.
+
     public static string UpOneFolder(string Path)
     {
-        return Path.Substring(0, Path.LastIndexOf("\\"));
+        if (string.IsNullOrEmpty(Path)) return Path;
+
+        string parent = System.IO.Path.GetDirectoryName(Path);
+
+        // GetDirectoryName returns null for roots ("C:\\") and unchanged input
+        // with no directory component; fall back to the input in both cases.
+        return string.IsNullOrEmpty(parent) ? Path : parent;
     }
 
     public static string LastFolderOrFile(string Path)
     {
-        return Path.Substring(Path.LastIndexOf("\\") + 1, Path.Length - Path.LastIndexOf("\\") - 1);
+        if (string.IsNullOrEmpty(Path)) return Path;
+
+        return System.IO.Path.GetFileName(Path.TrimEnd('\\', '/'));
     }
 
     public static string Extension(string Path)
     {
-        return Path.Substring(Path.LastIndexOf(".") + 1, Path.Length - Path.LastIndexOf(".") - 1);
+        if (string.IsNullOrEmpty(Path)) return string.Empty;
+
+        string ext = System.IO.Path.GetExtension(Path);
+
+        return ext.Length == 0 ? string.Empty : ext.Substring(1);
     }
 
     public static string RemoveTopLevelFolder(string Path)
     {
-        return Path.Substring(Path.IndexOf("\\") + 1, Path.Length - Path.IndexOf("\\") - 1);
+        if (string.IsNullOrEmpty(Path)) return Path;
+
+        // Strip everything up to and including the first separator; return
+        // unchanged when there is none (no direct BCL equivalent).
+        int firstSeparator = Path.IndexOfAny(new[] { '\\', '/' });
+
+        if (firstSeparator < 0) return Path;
+
+        return Path.Substring(firstSeparator + 1);
     }
 
     public static byte[] getFileFromMegs(string corePath, entities entities)
@@ -295,11 +317,16 @@ public static class SharedFunctions
     }
     public static string ArmorTypeString(string input)
     {
-        string corenne = input.Substring(input.IndexOf("_") + 1, input.Length - input.IndexOf("_") - 1).Replace("_", " ");
+        if (string.IsNullOrEmpty(input)) return string.Empty;
+        
+        int underscoreIndex = input.IndexOf('_');
+        if (underscoreIndex < 0) return string.Empty;
+        
+        string corenne = input.Substring(underscoreIndex + 1).Replace("_", " ");
         corenne = System.Text.RegularExpressions.Regex.Replace(corenne, "[A-Z]", " $0");
 
-        if (corenne == "") return corenne;
-        return " (" + corenne.Substring(1, corenne.Length - 1) + ")";
+        if (string.IsNullOrEmpty(corenne)) return corenne;
+        return " (" + corenne.Substring(1) + ")";
     }
 
     public static string[] SplitXMLWhitespaceList (string list)

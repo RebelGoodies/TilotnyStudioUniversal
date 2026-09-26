@@ -281,10 +281,17 @@ namespace TilotnyStudio
 
         private string ConvertMainPathToMod(string MainPath, bool suppress_creation = false, bool keepdata = false)
         {
-            int start = MainPath.IndexOf("\\Data\\") + 5; //5 being the length of Data\
+            if (string.IsNullOrEmpty(MainPath)) return MainPath;
+            
+            string normalizedPath = MainPath.Replace('/', '\\');
+            int start = normalizedPath.IndexOf("\\Data\\", StringComparison.OrdinalIgnoreCase);
+            if (start < 0) return MainPath;
+            
+            start += 5; // Length of "Data\"
             if (keepdata) start -= 5;
-            string ModPath = globals.LocalMod + MainPath.Substring(start, MainPath.Length - start);
-            //Make sure the folder exists
+            
+            string ModPath = Path.Combine(globals.LocalMod, normalizedPath.Substring(start));
+            // Make sure the folder exists
             if (!suppress_creation)
             {
                 System.IO.Directory.CreateDirectory(UpOneFolder(ModPath));
