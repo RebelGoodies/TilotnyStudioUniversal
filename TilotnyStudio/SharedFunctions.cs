@@ -173,10 +173,22 @@ public static class SharedFunctions
         private TextBox localModBox;
         private TextBox steamModBox;
         private TextBox modPathsBox;
+        private EnterAwareListBox workshopList;
         private CheckBox saveCfgBox;
+
+        // ListBox that reports Enter as an input key
+        private class EnterAwareListBox : ListBox
+        {
+            protected override bool IsInputKey(Keys keyData)
+            {
+                if ((keyData & Keys.KeyCode) == Keys.Enter) return true;
+                return base.IsInputKey(keyData);
+            }
+        }
 
         public string LocalModPath { get { return localModBox.Text.Trim(); } }
         public string SteamModPath { get { return steamModBox.Text.Trim(); } }
+
         public List<string> ModPaths
         {
             get
@@ -191,42 +203,143 @@ public static class SharedFunctions
 
         public PathSetupDialog()
         {
-            // Reasonable defaults, prefilled so the user only edits what differs
+            // Reasonable defaults on Windows, prefilled so the user only edits what differs
             const string DefaultLocalMods = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Star Wars Empire at War\\corruption\\Mods";
             const string DefaultWorkshop = "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\32470";
-            const string DefaultModPath = DefaultWorkshop + "\\1125571106\\Data";
 
             Text = "Locate Empire at War data";
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
+            FormBorderStyle = FormBorderStyle.Sizable;
+            MaximizeBox = true;
             MinimizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
-            ClientSize = new Size(560, 260);
+            MinimumSize = new Size(584, 470);
+            ClientSize = new Size(720, 470);
 
+            // Source folders
             Label localLabel = new Label { Text = "Local mods folder (…\\corruption\\Mods):", Location = new Point(12, 12), AutoSize = true };
-            localModBox = new TextBox { Location = new Point(12, 32), Width = 536, Text = DefaultLocalMods };
+            localModBox = new TextBox { Location = new Point(12, 32), Width = 606, Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right, Text = DefaultLocalMods };
 
-            Label steamLabel = new Label { Text = "Steam workshop folder (…\\workshop\\content\\32470):", Location = new Point(12, 62), AutoSize = true };
-            steamModBox = new TextBox { Location = new Point(12, 82), Width = 536, Text = DefaultWorkshop };
-
-            Label pathsLabel = new Label { Text = "Mod Data paths, one per line (highest priority first):", Location = new Point(12, 112), AutoSize = true };
-            modPathsBox = new TextBox { Location = new Point(12, 132), Width = 536, Height = 80, Multiline = true, ScrollBars = ScrollBars.Vertical, Text = DefaultModPath };
-
-            Button browseLocal = new Button { Text = "Browse…", Location = new Point(473, 56), Width = 75 };
+            Button browseLocal = new Button { Text = "Browse…", Location = new Point(633, 30), Width = 75, Anchor = AnchorStyles.Top | AnchorStyles.Right };
             browseLocal.Click += (s, e) =>
             {
                 using (FolderBrowserDialog dlg = new FolderBrowserDialog())
                     if (dlg.ShowDialog(this) == DialogResult.OK) localModBox.Text = dlg.SelectedPath;
             };
 
-            saveCfgBox = new CheckBox { Text = "Remember these paths (save to debugpaths.cfg)", Location = new Point(12, 222), AutoSize = true, Checked = true };
+            Label steamLabel = new Label { Text = "Steam workshop folder (…\\workshop\\content\\32470):", Location = new Point(12, 62), AutoSize = true };
+            steamModBox = new TextBox { Location = new Point(12, 82), Width = 606, Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right, Text = DefaultWorkshop };
 
-            Button ok = new Button { Text = "OK", DialogResult = DialogResult.OK, Location = new Point(390, 222), Width = 75 };
-            Button cancel = new Button { Text = "Cancel", DialogResult = DialogResult.Cancel, Location = new Point(473, 222), Width = 75 };
+            Button browseSteam = new Button { Text = "Browse…", Location = new Point(633, 82), Width = 75, Anchor = AnchorStyles.Top | AnchorStyles.Right };
+            browseSteam.Click += (s, e) =>
+            {
+                using (FolderBrowserDialog dlg = new FolderBrowserDialog())
+                    if (dlg.ShowDialog(this) == DialogResult.OK) steamModBox.Text = dlg.SelectedPath;
+            };
+
+            // Explicit Mod Data paths (editable, priority order)
+            Label pathsLabel = new Label { Text = "Mod Data paths (highest priority first):", Location = new Point(12, 116), AutoSize = true };
+            modPathsBox = new TextBox { Location = new Point(12, 136), Width = 696, Height = 84, Multiline = true, ScrollBars = ScrollBars.Vertical, Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right };
+            Label pathsHint = new Label { Text = "One path per line. Edit freely; add more from the found mods below.", Location = new Point(12, 222), AutoSize = true, ForeColor = SystemColors.GrayText };
+
+            // Found mods that can be added
+            Label scanLabel = new Label { Text = "Found mods:", Location = new Point(12, 244), AutoSize = true };
+            workshopList = new EnterAwareListBox { Location = new Point(12, 264), Width = 596, Height = 112, Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom };
+            Button addButton = new Button { Text = "Add Selected ↑", Location = new Point(614, 264), Width = 94, Height = 28, Anchor = AnchorStyles.Top | AnchorStyles.Right };
+            addButton.Click += (s, e) =>
+            {
+                string selected = workshopList.SelectedItem as string;
+                if (selected == null) return;
+                List<string> existing = ModPaths;
+                if (!existing.Contains(selected, StringComparer.OrdinalIgnoreCase))
+                    modPathsBox.AppendText((modPathsBox.TextLength > 0 && !modPathsBox.Text.EndsWith("\n") ? Environment.NewLine : "") + selected);
+            };
+            ScanFoundMods(DefaultWorkshop, DefaultLocalMods);
+            // Prefill the paths box with the first found mod, if any
+            if (workshopList.Items.Count > 0) modPathsBox.Text = workshopList.Items[0].ToString();
+            steamModBox.TextChanged += (s, e) => ScanFoundMods(steamModBox.Text.Trim(), localModBox.Text.Trim());
+            localModBox.TextChanged += (s, e) => ScanFoundMods(steamModBox.Text.Trim(), localModBox.Text.Trim());
+
+            // Enter on the found-mods list adds the selected mod (same as the button)
+            workshopList.KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter && workshopList.SelectedItem != null)
+                {
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+                    addButton.PerformClick();
+                }
+            };
+
+            saveCfgBox = new CheckBox { Text = "Remember these paths (save to debugpaths.cfg)", Location = new Point(12, 384), AutoSize = true, Checked = false, Anchor = AnchorStyles.Bottom | AnchorStyles.Left };
+
+            Button ok = new Button { Text = "OK", DialogResult = DialogResult.OK, Location = new Point(550, 404), Width = 75, Anchor = AnchorStyles.Bottom | AnchorStyles.Right };
+            Button cancel = new Button { Text = "Cancel", DialogResult = DialogResult.Cancel, Location = new Point(633, 404), Width = 75, Anchor = AnchorStyles.Bottom | AnchorStyles.Right };
             AcceptButton = ok;
             CancelButton = cancel;
+            modPathsBox.AcceptsReturn = true;
 
-            Controls.AddRange(new Control[] { localLabel, localModBox, steamLabel, steamModBox, pathsLabel, modPathsBox, browseLocal, saveCfgBox, ok, cancel });
+            Controls.AddRange(new Control[] { localLabel, localModBox, browseLocal, steamLabel, steamModBox, browseSteam, pathsLabel, modPathsBox, pathsHint, scanLabel, workshopList, addButton, saveCfgBox, ok, cancel });
+        }
+
+        // Populate the list with mods found under the workshop folder and the local Mods folder.
+        // The local Mods dir is scanned up to 2 folders deep
+        // (Mods\<ModName>\Data or Mods\<Group>\<ModName>\Data).
+        private void ScanFoundMods(string workshopFolder, string localModsFolder)
+        {
+            string selected = workshopList.SelectedItem as string;
+            workshopList.BeginUpdate();
+            workshopList.Items.Clear();
+            try
+            {
+                if (!string.IsNullOrEmpty(workshopFolder) && Directory.Exists(workshopFolder))
+                {
+                    foreach (string modDir in SafeGetDirectories(workshopFolder))
+                    {
+                        string dataPath = System.IO.Path.Combine(modDir, "Data");
+                        if (Directory.Exists(dataPath)) workshopList.Items.Add(dataPath);
+                    }
+                }
+                if (!string.IsNullOrEmpty(localModsFolder) && Directory.Exists(localModsFolder))
+                {
+                    foreach (string modDir in SafeGetDirectories(localModsFolder))
+                    {
+                        string dataPath = System.IO.Path.Combine(modDir, "Data");
+                        if (Directory.Exists(dataPath)) AddIfNew(dataPath);
+                        else //up to 2 folders deep: Mods\<a>\<mod>\Data
+                            foreach (string subDir in SafeGetDirectories(modDir))
+                            {
+                                string subDataPath = System.IO.Path.Combine(subDir, "Data");
+                                if (Directory.Exists(subDataPath)) AddIfNew(subDataPath);
+                            }
+                    }
+                }
+            }
+            catch (UnauthorizedAccessException) { } //unreadable entries are skipped
+            workshopList.EndUpdate();
+            if (selected != null) //preserve selection across rescans
+            {
+                int index = workshopList.Items.IndexOf(selected);
+                if (index >= 0) workshopList.SelectedIndex = index;
+            }
+        }
+
+        private void AddIfNew(string path)
+        {
+            if (!workshopList.Items.Contains(path)) workshopList.Items.Add(path);
+        }
+
+        // GetDirectories that tolerates broken entries instead of aborting the scan.
+        private static List<string> SafeGetDirectories(string path)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                result.AddRange(Directory.GetDirectories(path));
+            }
+            catch (UnauthorizedAccessException) { }
+            catch (DirectoryNotFoundException) { }
+            catch (IOException) { }
+            return result;
         }
 
         /// <summary>Whether the user opted in to saving the paths to debugpaths.cfg.</summary>
@@ -257,8 +370,15 @@ public static class SharedFunctions
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return null;
                 if (dlg.SaveCfg) dlg.SaveToCfg();
+                // Use the dialog's values directly since re-resolving would ignore them
+                ModPathResolution fromDialog = new ModPathResolution();
+                fromDialog.LocalModPath = dlg.LocalModPath;
+                fromDialog.SteamModPath = dlg.SteamModPath;
+                fromDialog.ModPaths = dlg.ModPaths.Where(Directory.Exists).ToList();
+                if (fromDialog.ModPaths.Count == 0) continue; //nothing valid entered, prompt again
+                resolved = fromDialog;
+                break;
             }
-            resolved = ResolveModPaths(exePath, args, walkUpLevels, modFolderUpLevels, devChoiceInCommonBranch);
         }
 
         return resolved;
