@@ -163,9 +163,11 @@ namespace TilotnyStudio
             //For debugging dev mode
             //exePath = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Star Wars Empire at War\\corruption\\Mods\\Imperial_Civil_War\\Data\\Tilotny\\";
 
-            ModPathResolution resolved = SharedFunctions.ResolveModPaths(
+            ModPathResolution resolved = SharedFunctions.ResolveModPathsWithPrompt(
                 exePath, Environment.GetCommandLineArgs(),
                 walkUpLevels: 5, modFolderUpLevels: 2, devChoiceInCommonBranch: false);
+
+            if (resolved == null) { this.Close(); return; } // user cancelled setup
 
             globals.modpaths = resolved.ModPaths;
             globals.localmodpath = resolved.LocalModPath;
@@ -179,11 +181,6 @@ namespace TilotnyStudio
 
                 globals.modpaths = devChoice.args;
                 devModeOn();
-            }
-            else if (resolved.Failed)
-            {
-                MessageBox.Show("Could not locate data files. Please place in the data folder of a Steam Workshop or local mod for Empire at War");
-                this.Close();
             }
             else if (resolved.CfgImperialCivilWar) devModeOn();
 

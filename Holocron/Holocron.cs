@@ -188,9 +188,11 @@ namespace Holocron
 
         private void Holocron_Load(object sender, EventArgs e)
         {
-            ModPathResolution resolved = SharedFunctions.ResolveModPaths(
+            ModPathResolution resolved = SharedFunctions.ResolveModPathsWithPrompt(
                 AppContext.BaseDirectory, Environment.GetCommandLineArgs(),
                 walkUpLevels: 4, modFolderUpLevels: 1, devChoiceInCommonBranch: true);
+
+            if (resolved == null) { this.Close(); return; } // user cancelled setup
 
             entities.modpaths = resolved.ModPaths;
             globals.localmodpath = resolved.LocalModPath;
@@ -206,13 +208,7 @@ namespace Holocron
                 globals.allplanets = devChoice.allplanet;
                 globals.devmode = true;
             }
-            else if (resolved.Failed)
-            {
-                MessageBox.Show("Could not locate data files. Please place in the data folder of a Steam Workshop or local mod for Empire at War");
-                this.Close();
-            }
-            load_mods();
-            globals.UnitSortConfig.SortType = UnitSortTypes.Name;
+            load_mods();            globals.UnitSortConfig.SortType = UnitSortTypes.Name;
             globals.UnitSortConfig.denomtype = "Absolute Value";
             globals.PlanetSortConfig.SortType = PlanetSortTypes.Name;
             UnitFilter INeedYourFunctions = new UnitFilter();

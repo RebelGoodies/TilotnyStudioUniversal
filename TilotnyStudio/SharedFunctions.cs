@@ -97,7 +97,10 @@ public static class SharedFunctions
         localModPath = lines[0];
         steamModPath = lines[1];
         for (int i = 2; i < lines.Count; i++) modPaths.Add(lines[i]);
-        return true;
+
+        // A cfg with folders but no mod Data paths can't drive the app.
+        // Treat it as unresolved so the setup dialog prompts for the missing mod paths.
+        return modPaths.Count > 0;
     }
 
     /// <param name="exePath">AppContext.BaseDirectory of the running exe</param>
@@ -153,12 +156,112 @@ public static class SharedFunctions
         // debugpaths.cfg fallback (running from the debugger / Tools)
         if (TryReadDebugPathsCfg(out result.LocalModPath, out result.SteamModPath, result.ModPaths))
         {
-            if (result.ModPaths.Count > 0 && result.ModPaths[0].Contains("Imperial_Civil_War"))
+            if (result.ModPaths[0].Contains("Imperial_Civil_War"))
                 result.CfgImperialCivilWar = true;
         }
         else result.Failed = true;
 
+        // Validate: drop mod paths that don't exist.
+        result.ModPaths = result.ModPaths.Where(Directory.Exists).ToList();
+        if (result.ModPaths.Count == 0) result.Failed = true;
+
         return result;
+    }
+
+    public class PathSetupDialog : Form
+    {
+        private TextBox localModBox;
+        private TextBox steamModBox;
+        private TextBox modPathsBox;
+        private CheckBox saveCfgBox;
+
+        public string LocalModPath { get { return localModBox.Text.Trim(); } }
+        public string SteamModPath { get { return steamModBox.Text.Trim(); } }
+        public List<string> ModPaths
+        {
+            get
+            {
+                return modPathsBox.Text
+                    .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(l => l.Trim())
+                    .Where(l => l.Length > 0)
+                    .ToList();
+            }
+        }
+
+        public PathSetupDialog()
+        {
+            // Reasonable defaults, prefilled so the user only edits what differs
+            const string DefaultLocalMods = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Star Wars Empire at War\\corruption\\Mods";
+            const string DefaultWorkshop = "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\32470";
+            const string DefaultModPath = DefaultWorkshop + "\\1125571106\\Data";
+
+            Text = "Locate Empire at War data";
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            ClientSize = new Size(560, 260);
+
+            Label localLabel = new Label { Text = "Local mods folder (…\\corruption\\Mods):", Location = new Point(12, 12), AutoSize = true };
+            localModBox = new TextBox { Location = new Point(12, 32), Width = 536, Text = DefaultLocalMods };
+
+            Label steamLabel = new Label { Text = "Steam workshop folder (…\\workshop\\content\\32470):", Location = new Point(12, 62), AutoSize = true };
+            steamModBox = new TextBox { Location = new Point(12, 82), Width = 536, Text = DefaultWorkshop };
+
+            Label pathsLabel = new Label { Text = "Mod Data paths, one per line (highest priority first):", Location = new Point(12, 112), AutoSize = true };
+            modPathsBox = new TextBox { Location = new Point(12, 132), Width = 536, Height = 80, Multiline = true, ScrollBars = ScrollBars.Vertical, Text = DefaultModPath };
+
+            Button browseLocal = new Button { Text = "Browse…", Location = new Point(473, 56), Width = 75 };
+            browseLocal.Click += (s, e) =>
+            {
+                using (FolderBrowserDialog dlg = new FolderBrowserDialog())
+                    if (dlg.ShowDialog(this) == DialogResult.OK) localModBox.Text = dlg.SelectedPath;
+            };
+
+            saveCfgBox = new CheckBox { Text = "Remember these paths (save to debugpaths.cfg)", Location = new Point(12, 222), AutoSize = true, Checked = true };
+
+            Button ok = new Button { Text = "OK", DialogResult = DialogResult.OK, Location = new Point(390, 222), Width = 75 };
+            Button cancel = new Button { Text = "Cancel", DialogResult = DialogResult.Cancel, Location = new Point(473, 222), Width = 75 };
+            AcceptButton = ok;
+            CancelButton = cancel;
+
+            Controls.AddRange(new Control[] { localLabel, localModBox, steamLabel, steamModBox, pathsLabel, modPathsBox, browseLocal, saveCfgBox, ok, cancel });
+        }
+
+        /// <summary>Whether the user opted in to saving the paths to debugpaths.cfg.</summary>
+        public bool SaveCfg { get { return saveCfgBox.Checked; } }
+
+        /// <summary>Writes the entered paths to debugpaths.cfg next to the exe.</summary>
+        public void SaveToCfg()
+        {
+            List<string> lines = new List<string>();
+            lines.Add(LocalModPath);
+            lines.Add(SteamModPath);
+            lines.AddRange(ModPaths);
+            File.WriteAllLines(System.IO.Path.Combine(AppContext.BaseDirectory, "debugpaths.cfg"), lines);
+        }
+    }
+
+    /// <summary>
+    /// Resolves mod paths, prompting the user with PathSetupDialog when automatic resolution fails.
+    /// Returns null if the user cancelled.
+    /// </summary>
+    public static ModPathResolution ResolveModPathsWithPrompt(string exePath, string[] args, int walkUpLevels, int modFolderUpLevels, bool devChoiceInCommonBranch)
+    {
+        ModPathResolution resolved = ResolveModPaths(exePath, args, walkUpLevels, modFolderUpLevels, devChoiceInCommonBranch);
+
+        while (resolved.Failed)
+        {
+            using (PathSetupDialog dlg = new PathSetupDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return null;
+                if (dlg.SaveCfg) dlg.SaveToCfg();
+            }
+            resolved = ResolveModPaths(exePath, args, walkUpLevels, modFolderUpLevels, devChoiceInCommonBranch);
+        }
+
+        return resolved;
     }
 
     public static byte[] getFileFromMegs(string corePath, entities entities)
@@ -436,6 +539,8 @@ public static class SharedFunctions
     public static string getLoadQuote(entities entities)
     {
         Random rnd = new Random();
+        if (entities.Text == null || entities.Text.Count == 0)
+            return "No text entries found in the mod."; //empty Text makes Next(0, -1) throw
         for (int i = 0; i < 1000; i++) //Don't search too long
         {
             string quote = entities.Text[rnd.Next(0, entities.Text.Count - 1)].entry;
